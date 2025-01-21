@@ -1,31 +1,29 @@
-'use client'
-import { useEffect, useState } from 'react';
-import { connectWebSocket, sendWebSocketMessage } from '@/app/api/websocket';
+'use client';
 
-const Admin = () => {
-  const [messages, setMessages] = useState<string[]>([]);
+import { useEffect } from 'react';
+import { useWebSocket } from '../context/WebSocketContext';
+import { useRouter } from 'next/navigation';
+
+const AdminPage = () => {
+  const { isConnected, messages, sendMessage } = useWebSocket();
+  const router = useRouter();
 
   useEffect(() => {
-    const onMessage = (event: MessageEvent) => {
-      setMessages((prevMessages) => [...prevMessages, event.data]);
-    };
 
-    const socket = connectWebSocket(onMessage);
-
-    // Nettoyage à la fin
-    return () => {
-      socket?.close();
-    };
-  }, []);
+    const lastMessage = messages[messages.length - 1];
+    if (lastMessage === 'win') {
+      router.push('/win'); 
+    }
+  }, [messages, router]); 
 
   const handleSendMessage = () => {
-    const message = 'Hello from the front-end!';
-    sendWebSocketMessage(message);
+    sendMessage('Hello from Admin!');
   };
 
   return (
     <div>
-      <h1>Admin WebSocket</h1>
+      <h1>Admin Page</h1>
+      <p>{isConnected ? 'Connected to WebSocket' : 'Not connected to WebSocket'}</p>
       <button onClick={handleSendMessage}>Send Message</button>
       <ul>
         {messages.map((msg, index) => (
@@ -36,4 +34,4 @@ const Admin = () => {
   );
 };
 
-export default Admin;
+export default AdminPage;
