@@ -1,47 +1,39 @@
 'use client'
+import { useEffect, useState } from 'react';
+import { connectWebSocket, sendWebSocketMessage } from '@/app/api/websocket';
 
-import { useEffect, useState } from "react";
-import socket from "../api/socket";
-
-export default function Admin()  {
-  const [connected, setConnected] = useState<boolean>(false);
-  const [infoMessage, setInfoMessage] = useState<string>("");
+const Admin = () => {
+  const [messages, setMessages] = useState<string[]>([]);
 
   useEffect(() => {
-    socket.on("connect", () => {
-      console.log("Connecté au WebSocket");
-      setConnected(true);
-    });
+    const onMessage = (event: MessageEvent) => {
+      setMessages((prevMessages) => [...prevMessages, event.data]);
+    };
 
-    socket.on("info", (data: { message: string }) => {
-      console.log("Message reçu du serveur :", data);
-      setInfoMessage(data.message);
-    });
+    const socket = connectWebSocket(onMessage);
 
-    socket.on("connect_error", (err) => {
-      console.error("Erreur de connexion :", err);
-      setConnected(false);
-    });
-
-    socket.on("disconnect", () => {
-      console.log("Déconnecté du WebSocket");
-      setConnected(false);
-    });
-
+    // Nettoyage à la fin
     return () => {
-      socket.off("connect");
-      socket.off("info");
-      socket.off("connect_error");
-      socket.off("disconnect");
+      socket?.close();
     };
   }, []);
 
+  const handleSendMessage = () => {
+    const message = 'Hello from the front-end!';
+    sendWebSocketMessage(message);
+  };
+
   return (
     <div>
-      <h1>Connexion au WebSocket </h1>
-      <p>Statut : {connected ? "Connecté" : "Non connecté"}</p>
-      <p>Message reçu : {infoMessage || "Aucun message pour l'instant"}</p>
+      <h1>Admin WebSocket</h1>
+      <button onClick={handleSendMessage}>Send Message</button>
+      <ul>
+        {messages.map((msg, index) => (
+          <li key={index}>{msg}</li>
+        ))}
+      </ul>
     </div>
   );
 };
 
+export default Admin;
