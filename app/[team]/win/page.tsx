@@ -1,7 +1,9 @@
-export default function Win() {
+import Win from "@/app/components/win/Win";
+
+export default function WinPage() {
   return (
     <div>
-      <h1> C'est la page win, vous etes trop fort !!</h1>;
+      <Win />;
     </div>
   );
 }
