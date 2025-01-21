@@ -1,6 +1,6 @@
 "use client";
 
-import Countdown from "@/app/components/countdown/countdown";
+import Countdown from "@/app/components/countdown/Countdown";
 
 export default function CountdownPage() {
   return (
