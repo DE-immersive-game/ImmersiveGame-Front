@@ -1,9 +1,7 @@
-import Loading from "@/app/components/loading/Loading";
-
-export default function LoadingPage() {
+export default function Loading() {
   return (
     <div>
-      <Loading />
+      <h1>Loading</h1>
     </div>
   );
 }

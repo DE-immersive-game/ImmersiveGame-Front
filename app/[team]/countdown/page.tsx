@@ -1,12 +1,7 @@
-"use client";
-
-import Countdown from "@/app/components/countdown/Countdown";
-
-export default function CountdownPage() {
+export default function Countdown() {
   return (
     <div>
       <h1>Countdown</h1>
-      <Countdown />
     </div>
   );
 }
