@@ -1,7 +1,9 @@
-export default function Lose() {
+import Lose from "@/app/components/lose/Lose";
+
+export default function LosePage() {
   return (
     <div>
-      <h1>Lose</h1>
+      <Lose />
     </div>
   );
 }
