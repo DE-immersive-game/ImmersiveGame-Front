@@ -1,23 +1,12 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useWebSocket } from '../context/WebSocketContext';
-import { useRouter } from 'next/navigation';
 
 const AdminPage = () => {
   const { isConnected, messages, sendMessage } = useWebSocket();
-  const router = useRouter();
-
-  useEffect(() => {
-
-    const lastMessage = messages[messages.length - 1];
-    if (lastMessage === 'win') {
-      router.push('/win'); 
-    }
-  }, [messages, router]); 
 
   const handleSendMessage = () => {
-    sendMessage('Hello from Admin!');
+    sendMessage(JSON.stringify({ event: 'test', data: { message: 'Hello from Admin!' } }));
   };
 
   return (

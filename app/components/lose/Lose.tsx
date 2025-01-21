@@ -1,9 +1,14 @@
-const Lose = () => {
+'use client';
+
+const LosePage = ({ params }: { params: { team: string } }) => {
+  const { team } = params;
+
   return (
     <div>
-      <h1>Vous avez perdu !</h1>
+      <h1>😢 Team {team} Loses. 😢</h1>
+      <p>Better luck next time, {team}!</p>
     </div>
   );
 };
 
-export default Lose;
+export default LosePage;

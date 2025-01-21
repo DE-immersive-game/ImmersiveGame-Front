@@ -1,6 +1,7 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const WEBSOCKET_URL = 'ws://10.14.72.238:8000/admin';
 
@@ -16,6 +17,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [messages, setMessages] = useState<string[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     const ws = new WebSocket(WEBSOCKET_URL);
@@ -26,7 +28,21 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     };
 
     ws.onmessage = (event) => {
-      setMessages((prev) => [...prev, event.data]);
+      const message = event.data;
+      setMessages((prev) => [...prev, message]);
+
+      try {
+        const parsedMessage = JSON.parse(message);
+
+        // Vérifie si un événement et une équipe sont définis, puis redirige dynamiquement
+        if (parsedMessage.event && parsedMessage.data?.team) {
+          const team = parsedMessage.data.team; // team_a ou team_b
+          const eventType = parsedMessage.event; // Exemple : "win"
+          router.push(`/${team}/${eventType}`); // Redirige dynamiquement
+        }
+      } catch (error) {
+        console.error('Failed to parse WebSocket message:', error);
+      }
     };
 
     ws.onclose = () => {
@@ -40,10 +56,11 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
     setSocket(ws);
 
+    // Cleanup on unmount
     return () => {
       ws.close();
     };
-  }, []);
+  }, [router]);
 
   const sendMessage = (message: string) => {
     if (socket && socket.readyState === WebSocket.OPEN) {
