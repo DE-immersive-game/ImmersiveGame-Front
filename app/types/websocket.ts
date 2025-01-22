@@ -1,13 +1,13 @@
 
 export type Team = 'team_a' | 'team_b' | "default";
 
-export type WebSocketEvent = 'start' | 'win' | 'lose' | 'update' | 'countdown' | 'test';
+export type WebSocketEvent = 'start' | 'win' | 'lose' | 'update' | 'countdown' | 'test' | 'loadindLight'| 'startGame' | 'resetGame' | 'pauseGame';
 
 export interface WebSocketData {
-  team: Team;
-  id: number;
-  GPIO: number;
-  pressed: boolean;
+  team?: Team;
+  id?: number;
+  GPIO?: number;
+  pressed?: boolean;
 }
 
 export interface WebSocketMessage {
