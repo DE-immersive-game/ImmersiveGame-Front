@@ -4,6 +4,7 @@ import './globals.css';
 import { WebSocketProvider } from './context/WebSocketContext';
 import { usePathname } from 'next/navigation';
 
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
