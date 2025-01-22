@@ -12,16 +12,22 @@ const LoaderBar: React.FC<ProgressBarProps> = ({ scoreA, scoreB }) => {
   let APercentage = 50; // Default is 50% - 50%
   let BPercentage = 50;
 
-  if (scoreDifference >= 2) {
+  if (scoreDifference >= 3) {
     APercentage = 100;
     BPercentage = 0;
+  } else if (scoreDifference === 2) {
+    APercentage = 82;
+    BPercentage = 18;
   } else if (scoreDifference === 1) {
-    APercentage = 75;
-    BPercentage = 25;
+    APercentage = 66;
+    BPercentage = 34;
   } else if (scoreDifference === -1) {
-    APercentage = 25;
-    BPercentage = 75;
-  } else if (scoreDifference <= -2) {
+    APercentage = 34;
+    BPercentage = 66;
+  } else if (scoreDifference === -2) {
+    APercentage = 18;
+    BPercentage = 82;
+  } else if (scoreDifference >= -3) {
     APercentage = 0;
     BPercentage = 100;
   }

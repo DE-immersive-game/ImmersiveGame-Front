@@ -1,7 +1,7 @@
 import LoaderBar from "../loaderbar/LoaderBar";
 
 const Score = () => {
-  const scoreA = 3;
+  const scoreA = 5;
   const scoreB = 5;
 
   return (
