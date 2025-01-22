@@ -31,21 +31,36 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode; currentTea
       const message = event.data;
       try {
         const parsedMessage = JSON.parse(message);
-
+    
+        // Si le message ne contient pas de "data", appliquez-le à toutes les équipes
+        if (!parsedMessage.data) {
+          setMessages((prev) => [...prev, message]);
+    
+          // Vérifiez si l'événement est "start" et redirigez avec "countdown"
+          if (parsedMessage.event === 'start') {
+            console.log('Événement "start" reçu, redirection avec "countdown"...');
+            router.push(`/${currentTeam}/countdown`); // Redirige vers "countdown" pour toutes les équipes
+          }
+    
+          return; // Stoppe ici pour éviter d'exécuter la suite pour ce type de message
+        }
+    
         // Vérifiez si le message concerne l'équipe actuelle
         if (parsedMessage.data?.team === currentTeam) {
           setMessages((prev) => [...prev, message]);
-
-          // Redirection si les données de l'équipe sont présentes
-          if (parsedMessage.event && parsedMessage.data?.team) {
-            const eventType = parsedMessage.event; // Exemple : "win"
-            router.push(`/${currentTeam}/${eventType}`); // Redirige dynamiquement
-          }
+    
+          // Redirection conditionnelle avec gestion de "start"
+          const eventType = parsedMessage.event === 'start' ? 'countdown' : parsedMessage.event;
+          router.push(`/${currentTeam}/${eventType}`); // Redirige dynamiquement
         }
       } catch (error) {
         console.error('Failed to parse WebSocket message:', error);
       }
     };
+    
+    
+
+    
 
     ws.onclose = () => {
       setIsConnected(false);
