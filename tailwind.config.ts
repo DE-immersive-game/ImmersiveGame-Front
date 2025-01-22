@@ -10,7 +10,11 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        orbitron: ['Orbitron', ...defaultTheme.fontFamily.sans], // Orbitron comme police principale
+        orbitron: ['Orbitron', ...defaultTheme.fontFamily.sans],
+        galaxyItalic: ['galaxyItalic', ...defaultTheme.fontFamily.sans], 
+        galaxyPoster: ['galaxyPoster', ...defaultTheme.fontFamily.sans], 
+        galaxyPosterItalic: ['galaxyItalic', ...defaultTheme.fontFamily.sans], 
+        galaxyRegular: ['galaxyPoster', ...defaultTheme.fontFamily.sans], 
       },
     },
   },

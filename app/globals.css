@@ -1,9 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap');
 
+@font-face {
+    font-family: 'galaxyItalic'; 
+    src: url('/fonts/EdgeOfTheGalaxyItalic-ZVJB3.otf') 
+  }
+
+@font-face {
+    font-family: 'galaxyPoster';
+    src: url('/fonts/EdgeOfTheGalaxyPoster-3zRAp.otf');
+}
+
+@font-face {
+    font-family: 'galaxyPosterItalic';
+    src: url('/fonts/EdgeOfTheGalaxyPosterItalic-x3o1m.otf');
+}
+
+@font-face {
+    font-family: 'galaxyRegular';
+    src: url('/public/fonts/EdgeOfTheGalaxyRegular-OVEa6.otf');
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-
-
-
