@@ -2,11 +2,11 @@
 
 import { useRouter } from 'next/navigation';
 
-const HomePage = () => {
+const HomePage: React.FC = () => {
   const router = useRouter();
 
   const handleSelectTeam = (team: string) => {
-    router.push(`/${team}`); // Redirige vers la page de l'équipe sélectionnée
+    router.push(`/${team}`);
   };
 
   return (

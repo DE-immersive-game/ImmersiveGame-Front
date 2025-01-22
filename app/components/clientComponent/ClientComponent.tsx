@@ -4,7 +4,11 @@ import './globals.css';
 import { WebSocketProvider } from '../../context/WebSocketContext';
 import { usePathname } from 'next/navigation';
 
-export default function ClientComponent({ children }: { children: React.ReactNode }) {
+interface ClientComponentProps {
+  children: React.ReactNode;
+}
+
+export default function ClientComponent({ children }: ClientComponentProps) {
   const pathname = usePathname();
 
   const team = pathname.includes('team_a') ? 'team_a' : 'team_b';
