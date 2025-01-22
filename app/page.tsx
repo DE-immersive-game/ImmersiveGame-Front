@@ -14,6 +14,7 @@ const HomePage: React.FC = () => {
       <h1>Select Your Team</h1>
       <button onClick={() => handleSelectTeam('team_a')}>Team A</button>
       <button onClick={() => handleSelectTeam('team_b')}>Team B</button>
+      <button onClick={() => handleSelectTeam('admin')}>Admin</button>
     </div>
   );
 };
