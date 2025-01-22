@@ -1,7 +1,6 @@
 'use client';
 
-const LosePage = ({ params }: { params: { team: string } }) => {
-  const { team } = params;
+const Lose = ({ team }: { team: string }) => {
 
   return (
     <div>
@@ -11,4 +10,4 @@ const LosePage = ({ params }: { params: { team: string } }) => {
   );
 };
 
-export default LosePage;
+export default Lose;

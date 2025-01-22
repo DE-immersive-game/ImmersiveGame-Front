@@ -1,23 +1,13 @@
 'use client';
 
 import { useParams } from 'next/navigation';
+import Lose from '@/app/components/lose/Lose';
 
-const LosePage = () => {
+const WinPage = () => {
   const params = useParams();
+  const team = typeof params.team === 'string' ? params.team : ''; // Vérifie et force le type string
 
-  // Validez que "params.team" est défini
-  const team = typeof params?.team === 'string' ? params.team : null;
-
-  if (!team) {
-    return <div>Error: Team parameter is missing</div>; // Gérer le cas où le paramètre est manquant
-  }
-
-  return (
-    <div>
-      <h1>😢 Team {team} Loses. 😢</h1>
-      <p>Better luck next time, {team}!</p>
-    </div>
-  );
+  return <Lose team={team} />;
 };
 
-export default LosePage;
+export default Lose;

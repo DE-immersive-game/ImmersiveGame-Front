@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 const WEBSOCKET_URL = 'ws://10.14.72.238:8000/admin';
@@ -13,7 +13,7 @@ interface WebSocketContextType {
 
 const WebSocketContext = createContext<WebSocketContextType | undefined>(undefined);
 
-export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const WebSocketProvider: React.FC<{ children: React.ReactNode; currentTeam: string }> = ({ children, currentTeam }) => {
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [messages, setMessages] = useState<string[]>([]);
@@ -29,16 +29,18 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
     ws.onmessage = (event) => {
       const message = event.data;
-      setMessages((prev) => [...prev, message]);
-
       try {
         const parsedMessage = JSON.parse(message);
 
-        // Vérifie si un événement et une équipe sont définis, puis redirige dynamiquement
-        if (parsedMessage.event && parsedMessage.data?.team) {
-          const team = parsedMessage.data.team; // team_a ou team_b
-          const eventType = parsedMessage.event; // Exemple : "win"
-          router.push(`/${team}/${eventType}`); // Redirige dynamiquement
+        // Vérifiez si le message concerne l'équipe actuelle
+        if (parsedMessage.data?.team === currentTeam) {
+          setMessages((prev) => [...prev, message]);
+
+          // Redirection si les données de l'équipe sont présentes
+          if (parsedMessage.event && parsedMessage.data?.team) {
+            const eventType = parsedMessage.event; // Exemple : "win"
+            router.push(`/${currentTeam}/${eventType}`); // Redirige dynamiquement
+          }
         }
       } catch (error) {
         console.error('Failed to parse WebSocket message:', error);
@@ -56,11 +58,10 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
     setSocket(ws);
 
-    // Cleanup on unmount
     return () => {
       ws.close();
     };
-  }, [router]);
+  }, [router, currentTeam]);
 
   const sendMessage = (message: string) => {
     if (socket && socket.readyState === WebSocket.OPEN) {
