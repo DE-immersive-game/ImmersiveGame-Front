@@ -33,16 +33,14 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
       const message = event.data;
       try {
         const parsedMessage: WebSocketMessage = JSON.parse(message);
-
-        if (!parsedMessage.data) {
+        const currentPath = window.location.pathname;
+        const startExpectedPath = `/${currentTeam}/loading`;
+    
+        if (currentPath === startExpectedPath && parsedMessage.event === 'startGame') {
+          console.log('Événement "start" reçu, redirection avec "countdown"...');
+          router.push(`/${currentTeam}/countdown`);
+        } else if (!parsedMessage.data) {
           setMessages((prev) => [...prev, message]);
-
-          if (parsedMessage.event === 'start') {
-            console.log('Événement "start" reçu, redirection avec "countdown"...');
-            router.push(`/${currentTeam}/countdown`);
-          }
-
-          return;
         }
 
         if (parsedMessage.data?.team === currentTeam) {
