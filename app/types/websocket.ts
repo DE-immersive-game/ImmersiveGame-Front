@@ -1,5 +1,5 @@
 
-export type Team = 'team_a' | 'team_b' | "default";
+export type Team = 'team_a' | 'team_b';
 
 export type WebSocketEvent = 'start' | 'win' | 'lose' | 'update' | 'countdown' | 'test' | 'loadindLight'| 'startGame' | 'resetGame' | 'pauseGame' | 'waitingForPlayers';
 

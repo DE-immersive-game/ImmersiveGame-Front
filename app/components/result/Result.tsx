@@ -43,11 +43,9 @@ const Result = ({
     <div className="relative">
       {/* Fond dynamique */}
       <div
-        className="absolute inset-0 z-0 animate-customPulse"
+        className="absolute inset-0 z-0 animate-customPulse bg-center bg-cover"
         style={{
           backgroundImage: `url(${background})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
         }}
       ></div>
 
