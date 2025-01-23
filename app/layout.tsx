@@ -9,7 +9,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const pathname = usePathname();
 
   // Déterminez l'équipe en fonction du chemin d'URL
-  const team = pathname.includes('team_a') ? 'team_a' : pathname.includes('team_b') ? 'team_b' : 'default';
+
+  const team = pathname.includes('team_a') ? 'team_a' : 'team_b';
 
   return (
     <html lang="en">
