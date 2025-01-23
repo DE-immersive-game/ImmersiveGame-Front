@@ -16,12 +16,14 @@ const Result = ({
   const resources = {
     team_a: {
       background: '/backgrounds/background-edenys.png',
+      loseBackground: '/backgrounds/background-defeat-edenys.png',
       logo: '/logos/Edenys.png',
       activeIcon: '/icons/edenys-active.png',
       inactiveIcon: '/icons/nexora-inactive.png',
     },
     team_b: {
       background: '/backgrounds/background-nexora.png',
+      loseBackground: '/backgrounds/background-defeat-nexora.png', 
       logo: '/logos/Nexora.png',
       activeIcon: '/icons/nexora-active.png',
       inactiveIcon: '/icons/edenys-inactive.png',
@@ -29,14 +31,21 @@ const Result = ({
   };
 
   const currentTeamResources = resources[team];
+
+  const background =
+    resultType === 'lose'
+      ? currentTeamResources.loseBackground
+      : currentTeamResources.background;
+
   const resultText = resultType === 'win' ? 'Victoire' : 'Defaite';
 
   return (
     <div className="relative">
+      {/* Fond dynamique */}
       <div
         className="absolute inset-0 z-0 animate-customPulse"
         style={{
-          backgroundImage: `url(${currentTeamResources.background})`,
+          backgroundImage: `url(${background})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
@@ -58,7 +67,7 @@ const Result = ({
         >
           {resultText}
         </h1>
-        <div className="flex items-center justify-between w-[443px] h-[118px] bg-neutral-text bg-opacity-5 rounded-[15px] p-[35px] border border-white/40 shadow-inner">
+        <div className="flex items-center justify-between w-[443px] h-[118px] bg-neutral-text bg-opacity-5 rounded-[15px] p-[35px] border-2 border-white/40 shadow-inner"> 
           <div className="flex items-center space-x-[47px]">
             <Image
               src={currentTeamResources.activeIcon}

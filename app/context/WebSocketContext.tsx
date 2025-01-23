@@ -19,6 +19,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [messages, setMessages] = useState<string[]>([]);
+  const [loadingState, setLoadingState] = useState<string>('waiting'); // État pour gérer le type d'affichage
   const router = useRouter();
 
   useEffect(() => {
@@ -36,16 +37,25 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
         const currentPath = window.location.pathname;
         const startExpectedPath = `/${currentTeam}/loading`;
     
+        // Vérifie si on est sur la page "loading" et si l'événement "startGame" est reçu
         if (currentPath === startExpectedPath && parsedMessage.event === 'startGame') {
           console.log('Événement "start" reçu, redirection avec "countdown"...');
-          router.push(`/${currentTeam}/countdown`);
+          setLoadingState('starting'); // Mise à jour de l'état
+          setTimeout(() => {
+            router.push(`/${currentTeam}/countdown`); // Redirection après un délai de 1 seconde
+          }, 1000);
         } else if (!parsedMessage.data) {
+          // Si les données ne sont pas présentes dans le message
           setMessages((prev) => [...prev, message]);
         }
-
-        if (parsedMessage.data?.team === currentTeam) {
+    
+        // Gestion des autres événements
+        if (parsedMessage.event === 'waitingForPlayers') {
+          setLoadingState('waiting'); // Met à jour l'état pour "waiting"
+        } else if (parsedMessage.data?.team === currentTeam) {
+          // Traite les messages spécifiques à l'équipe courante
           setMessages((prev) => [...prev, message]);
-
+    
           if (parsedMessage.event) {
             const eventType = parsedMessage.event;
             router.push(`/${currentTeam}/${eventType}`);
@@ -55,6 +65,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
         console.error('Failed to parse WebSocket message:', error);
       }
     };
+    
 
     ws.onclose = () => {
       setIsConnected(false);
@@ -81,7 +92,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
   };
 
   return (
-    <WebSocketContext.Provider value={{ isConnected, messages, sendMessage }}>
+    <WebSocketContext.Provider value={{ isConnected, messages, sendMessage, loadingState }}>
       {children}
     </WebSocketContext.Provider>
   );

@@ -1,7 +1,7 @@
 
 export type Team = 'team_a' | 'team_b' | "default";
 
-export type WebSocketEvent = 'start' | 'win' | 'lose' | 'update' | 'countdown' | 'test' | 'loadindLight'| 'startGame' | 'resetGame' | 'pauseGame';
+export type WebSocketEvent = 'start' | 'win' | 'lose' | 'update' | 'countdown' | 'test' | 'loadindLight'| 'startGame' | 'resetGame' | 'pauseGame' | 'waitingForPlayers';
 
 export interface WebSocketData {
   team?: Team;
@@ -19,6 +19,7 @@ export interface WebSocketContextType {
   isConnected: boolean;
   messages: string[];
   sendMessage: (message: WebSocketMessage) => void;
+  loadingState: string;
 }
 
 export interface WebSocketState {
