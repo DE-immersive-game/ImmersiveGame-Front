@@ -2,31 +2,28 @@
 
 import { useParams } from 'next/navigation';
 import Result from '@/app/components/result/Result';
+import { Score, Team } from '@/app/types';
 
 const LosePage = () => {
   const params = useParams();
-  const team = typeof params.team === 'string' ? params.team : ''; // Vérifie et force le type string
+  const team = (typeof params.team === 'string' ? params.team : '') as Team;
 
-  // Exemple de données statiques (peut être remplacé par une source dynamique)
-  const scores = {
-    team_a: { teamScore: 7, opponentScore: 9 },
-    team_b: { teamScore: 7, opponentScore: 9 },
+  if (![Team.TEAM_A, Team.TEAM_B].includes(team)) {
+    return <div>Équipe invalide ou non trouvée</div>;
+  }
+
+  const scoreResponse: { event: string; data: Score } = {
+    event: 'teamScore',
+    data: {
+      team_a: 4,
+      team_b: 5,
+      winner: Team.TEAM_B,
+    },
   };
 
-  // Récupère les scores en fonction de l'équipe
-  const currentScores = scores[team as 'team_a' | 'team_b'] || {
-    teamScore: 0,
-    opponentScore: 0,
-  };
+  const score = scoreResponse.data;
 
-  return (
-    <Result
-      team={team as 'team_a' | 'team_b'}
-      teamScore={currentScores.teamScore}
-      opponentScore={currentScores.opponentScore}
-      resultType="lose"
-    />
-  );
+  return <Result team={team} score={score} resultType="lose" />;
 };
 
 export default LosePage;

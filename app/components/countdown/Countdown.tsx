@@ -1,5 +1,5 @@
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 const Countdown = () => {
   const [count, setCount] = useState(3);
@@ -15,7 +15,7 @@ const Countdown = () => {
   }, [count]);
 
   return (
-    <div style={{ textAlign: "center", fontSize: "48px", color: "blue" }}>
+    <div style={{ textAlign: 'center', fontSize: '48px', color: 'blue' }}>
       {count > 0 ? <h1>{count}</h1> : <h1></h1>}
     </div>
   );

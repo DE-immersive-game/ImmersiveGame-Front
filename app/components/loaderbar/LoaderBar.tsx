@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 
-interface ProgressBarProps {
-  scoreA: number; // A team
-  scoreB: number; // B Team
-}
+type ProgressBarProps = {
+  scoreA: number;
+  scoreB: number;
+};
 
-const LoaderBar: React.FC<ProgressBarProps> = ({ scoreA, scoreB }) => {
+const LoaderBar = ({ scoreA, scoreB }: ProgressBarProps) => {
   const scoreDifference = scoreA - scoreB;
 
   // Determine bar state based on score difference
@@ -54,22 +54,22 @@ const LoaderBar: React.FC<ProgressBarProps> = ({ scoreA, scoreB }) => {
 
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
-    display: "flex",
-    width: "100%",
-    height: "30px",
-    backgroundColor: "#e0e0e0",
-    borderRadius: "5px",
-    overflow: "hidden",
+    display: 'flex',
+    width: '100%',
+    height: '30px',
+    backgroundColor: '#e0e0e0',
+    borderRadius: '5px',
+    overflow: 'hidden',
   },
   bar: {
-    height: "100%",
-    transition: "width 0.3s ease",
+    height: '100%',
+    transition: 'width 0.3s ease',
   },
   purpleBar: {
-    backgroundColor: "purple",
+    backgroundColor: 'purple',
   },
   greenBar: {
-    backgroundColor: "green",
+    backgroundColor: 'green',
   },
 };
 

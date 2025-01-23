@@ -1,26 +1,16 @@
 'use client';
 
+import { Team } from '@/app/types';
+import { teamsRessources } from '@/lib/teamsRessources';
 import Image from 'next/image';
 
-const LoadingScreen = ({
-  team,
-  state,
-}: {
-  team: 'team_a' | 'team_b';
-  state: string; // État reçu depuis le contexte
-}) => {
-  const resources = {
-    team_a: {
-      background: '/backgrounds/background-edenys.png',
-      logo: '/logos/Edenys-long.png',
-    },
-    team_b: {
-      background: '/backgrounds/background-nexora.png',
-      logo: '/logos/Nexora-long.png',
-    },
-  };
+type LoadingScreenProps = {
+  team: Team;
+  state: string;
+};
 
-  const currentTeamResources = resources[team];
+const LoadingScreen = ({ team, state }: LoadingScreenProps) => {
+  const currentTeamResources = teamsRessources[team];
 
   if (!currentTeamResources) {
     return <div>Équipe invalide ou non trouvée</div>;
@@ -50,7 +40,7 @@ const LoadingScreen = ({
       ></div>
       <div className="absolute top-10">
         <Image
-          src={currentTeamResources.logo}
+          src={currentTeamResources.logoLong}
           alt={`${team} Logo`}
           width={300}
           height={300}
