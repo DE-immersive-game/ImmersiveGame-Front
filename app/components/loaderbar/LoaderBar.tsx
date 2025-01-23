@@ -1,11 +1,11 @@
 import React from "react";
 
-interface ProgressBarProps {
-  scoreA: number; // A team
-  scoreB: number; // B Team
-}
+type ProgressBarProps = {
+  scoreA: number;
+  scoreB: number;
+};
 
-const LoaderBar: React.FC<ProgressBarProps> = ({ scoreA, scoreB }) => {
+const LoaderBar = ({ scoreA, scoreB }: ProgressBarProps) => {
   const scoreDifference = scoreA - scoreB;
 
   // Determine bar state based on score difference

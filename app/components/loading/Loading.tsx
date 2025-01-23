@@ -1,26 +1,16 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
+import { Team } from "@/app/types";
+import { teamsRessources } from "@/lib/teamsRessources";
+import Image from "next/image";
 
-const LoadingScreen = ({
-  team,
-  state,
-}: {
-  team: 'team_a' | 'team_b';
-  state: string; // État reçu depuis le contexte
-}) => {
-  const resources = {
-    team_a: {
-      background: '/backgrounds/background-edenys.png',
-      logo: '/logos/Edenys-long.png',
-    },
-    team_b: {
-      background: '/backgrounds/background-nexora.png',
-      logo: '/logos/Nexora-long.png',
-    },
-  };
+type LoadingScreenProps = {
+  team: Team;
+  state: string;
+};
 
-  const currentTeamResources = resources[team];
+const LoadingScreen = ({ team, state }: LoadingScreenProps) => {
+  const currentTeamResources = teamsRessources[team];
 
   if (!currentTeamResources) {
     return <div>Équipe invalide ou non trouvée</div>;
@@ -29,12 +19,12 @@ const LoadingScreen = ({
   // Détermine le texte ou contenu basé sur l'état
   const getContent = () => {
     switch (state) {
-      case 'waiting':
-        return 'En attente de joueurs';
-      case 'starting':
-        return 'La partie va commencer...'; // Texte pour "starting"
+      case "waiting":
+        return "En attente de joueurs";
+      case "starting":
+        return "La partie va commencer..."; // Texte pour "starting"
       default:
-        return 'Chargement...';
+        return "Chargement...";
     }
   };
 
@@ -44,13 +34,13 @@ const LoadingScreen = ({
         className="absolute inset-0 z-0 animate-customPulse"
         style={{
           backgroundImage: `url(${currentTeamResources.background})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundSize: "cover",
+          backgroundPosition: "center",
         }}
       ></div>
       <div className="absolute top-10">
         <Image
-          src={currentTeamResources.logo}
+          src={currentTeamResources.logoLong}
           alt={`${team} Logo`}
           width={300}
           height={300}
@@ -62,7 +52,7 @@ const LoadingScreen = ({
           <h1
             className="text-6xl font-galaxyRegular text-neutral-text uppercase tracking-[.48em] pt-3"
             style={{
-              textShadow: '0px 0px 10px rgba(255, 255, 255, 0.75)',
+              textShadow: "0px 0px 10px rgba(255, 255, 255, 0.75)",
             }}
           >
             {getContent()}
