@@ -1,16 +1,18 @@
-'use client';
+"use client";
 
-import { createContext, useContext, useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { createContext, useContext, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   WebSocketMessage,
   WebSocketContextType,
   WebSocketProviderProps,
-} from '../types';
+} from "../types";
 
-const WEBSOCKET_URL = 'ws://10.14.72.238:8000/admin';
+const WEBSOCKET_URL = "ws://10.14.72.238:8000/admin";
 
-const WebSocketContext = createContext<WebSocketContextType | undefined>(undefined);
+const WebSocketContext = createContext<WebSocketContextType | undefined>(
+  undefined
+);
 
 export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
   children,
@@ -26,23 +28,26 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
 
     ws.onopen = () => {
       setIsConnected(true);
-      console.log('WebSocket connected');
+      console.log("WebSocket connected");
     };
 
     ws.onmessage = (event: MessageEvent) => {
       const message = event.data;
       try {
         const parsedMessage: WebSocketMessage = JSON.parse(message);
+        const currentPath = window.location.pathname;
+        const startExpectedPath = `/${currentTeam}/loading`;
 
-        if (!parsedMessage.data) {
+        if (
+          currentPath === startExpectedPath &&
+          parsedMessage.event === "startGame"
+        ) {
+          console.log(
+            'Événement "start" reçu, redirection avec "countdown"...'
+          );
+          router.push(`/${currentTeam}/countdown`);
+        } else if (!parsedMessage.data) {
           setMessages((prev) => [...prev, message]);
-
-          if (parsedMessage.event === 'start') {
-            console.log('Événement "start" reçu, redirection avec "countdown"...');
-            router.push(`/${currentTeam}/countdown`);
-          }
-
-          return;
         }
 
         if (parsedMessage.data?.team === currentTeam) {
@@ -54,17 +59,17 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
           }
         }
       } catch (error) {
-        console.error('Failed to parse WebSocket message:', error);
+        console.error("Failed to parse WebSocket message:", error);
       }
     };
 
     ws.onclose = () => {
       setIsConnected(false);
-      console.log('WebSocket disconnected');
+      console.log("WebSocket disconnected");
     };
 
     ws.onerror = (error) => {
-      console.error('WebSocket error:', error);
+      console.error("WebSocket error:", error);
     };
 
     setSocket(ws);
@@ -78,7 +83,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
     if (socket && socket.readyState === WebSocket.OPEN) {
       socket.send(JSON.stringify(message));
     } else {
-      console.warn('WebSocket is not connected');
+      console.warn("WebSocket is not connected");
     }
   };
 
@@ -92,7 +97,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
 export const useWebSocket = (): WebSocketContextType => {
   const context = useContext(WebSocketContext);
   if (!context) {
-    throw new Error('useWebSocket must be used within a WebSocketProvider');
+    throw new Error("useWebSocket must be used within a WebSocketProvider");
   }
   return context;
 };
