@@ -1,7 +1,7 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import Win from '@/app/components/win/Win';
+import Result from '@/app/components/result/Result';
 
 const WinPage = () => {
   const params = useParams();
@@ -20,10 +20,11 @@ const WinPage = () => {
   };
 
   return (
-    <Win
+    <Result
       team={team as 'team_a' | 'team_b'}
       teamScore={currentScores.teamScore}
       opponentScore={currentScores.opponentScore}
+      resultType="win"
     />
   );
 };
