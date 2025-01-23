@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import Result from "@/app/components/result/Result";
-import { Score, Team } from "@/app/types";
+import Result from '@/app/components/result/Result';
+import { Score, Team } from '@/app/types';
 
 const ScorePage = () => {
   const scoreResponse: { event: string; data: Score } = {
-    event: "teamScore",
+    event: 'teamScore',
     data: {
       team_a: 6,
       team_b: 5,

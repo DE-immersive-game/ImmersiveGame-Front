@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Team } from "@/app/types";
-import { teamsRessources } from "@/lib/teamsRessources";
-import Image from "next/image";
+import { Team } from '@/app/types';
+import { teamsRessources } from '@/lib/teamsRessources';
+import Image from 'next/image';
 
 type LoadingScreenProps = {
   team: Team;
@@ -19,12 +19,12 @@ const LoadingScreen = ({ team, state }: LoadingScreenProps) => {
   // Détermine le texte ou contenu basé sur l'état
   const getContent = () => {
     switch (state) {
-      case "waiting":
-        return "En attente de joueurs";
-      case "starting":
-        return "La partie va commencer..."; // Texte pour "starting"
+      case 'waiting':
+        return 'En attente de joueurs';
+      case 'starting':
+        return 'La partie va commencer...'; // Texte pour "starting"
       default:
-        return "Chargement...";
+        return 'Chargement...';
     }
   };
 
@@ -34,8 +34,8 @@ const LoadingScreen = ({ team, state }: LoadingScreenProps) => {
         className="absolute inset-0 z-0 animate-customPulse"
         style={{
           backgroundImage: `url(${currentTeamResources.background})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
         }}
       ></div>
       <div className="absolute top-10">
@@ -52,7 +52,7 @@ const LoadingScreen = ({ team, state }: LoadingScreenProps) => {
           <h1
             className="text-6xl font-galaxyRegular text-neutral-text uppercase tracking-[.48em] pt-3"
             style={{
-              textShadow: "0px 0px 10px rgba(255, 255, 255, 0.75)",
+              textShadow: '0px 0px 10px rgba(255, 255, 255, 0.75)',
             }}
           >
             {getContent()}

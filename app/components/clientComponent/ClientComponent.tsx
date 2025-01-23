@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import "./globals.css";
-import { WebSocketProvider } from "../../context/WebSocketContext";
-import { usePathname } from "next/navigation";
-import { Team } from "@/app/types";
+import './globals.css';
+import { WebSocketProvider } from '../../context/WebSocketContext';
+import { usePathname } from 'next/navigation';
+import { Team } from '@/app/types';
 
 type ClientComponentProps = {
   children: React.ReactNode;

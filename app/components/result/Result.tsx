@@ -1,24 +1,24 @@
-"use client";
+'use client';
 
-import { Score, ScoreResult, Team } from "@/app/types";
-import { teamsRessources } from "@/lib/teamsRessources";
-import Image from "next/image";
-import Icon from "../icon/Icon";
+import { Score, ScoreResult, Team } from '@/app/types';
+import { teamsRessources } from '@/lib/teamsRessources';
+import Image from 'next/image';
+import Icon from '../icon/Icon';
 
 type ResultProps = {
   team: Team;
   resultType: ScoreResult;
   score: Score;
-  mode?: "default" | "tv";
+  mode?: 'default' | 'tv';
 };
 
-const Result = ({ team, resultType, score, mode = "default" }: ResultProps) => {
+const Result = ({ team, resultType, score, mode = 'default' }: ResultProps) => {
   const currentTeamResources = teamsRessources[team];
 
   const background =
-    resultType === "lose" ? currentTeamResources.loseBackground : currentTeamResources.background;
+    resultType === 'lose' ? currentTeamResources.loseBackground : currentTeamResources.background;
 
-  const resultText = resultType === "win" ? "Victoire" : "Defaite";
+  const resultText = resultType === 'win' ? 'Victoire' : 'Defaite';
 
   return (
     <div className="relative">
@@ -34,12 +34,12 @@ const Result = ({ team, resultType, score, mode = "default" }: ResultProps) => {
           <h1
             className="text-white text-7xl font-galaxyRegular tracking-[.25em] uppercase pl-4 pt-3"
             style={{
-              textShadow: "0px 0px 20px rgba(255, 255, 255, 0.75)",
+              textShadow: '0px 0px 20px rgba(255, 255, 255, 0.75)',
             }}
           >
             {resultText}
           </h1>
-          {mode === "tv" && (
+          {mode === 'tv' && (
             <h2 className="font-orbitron text-4xl text-white tracking-[.25em]">
               de {teamsRessources[score.winner].name}
             </h2>

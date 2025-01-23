@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { createContext, useContext, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { WebSocketMessage, WebSocketContextType, WebSocketProviderProps } from "../types";
+import { createContext, useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { WebSocketMessage, WebSocketContextType, WebSocketProviderProps } from '../types';
 
-const WEBSOCKET_URL = "ws://10.14.72.238:8000/admin";
+const WEBSOCKET_URL = 'ws://10.14.72.238:8000/admin';
 
 const WebSocketContext = createContext<WebSocketContextType | undefined>(undefined);
 
@@ -12,7 +12,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children, 
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [messages, setMessages] = useState<string[]>([]);
-  const [loadingState, setLoadingState] = useState<string>("waiting"); // État pour gérer le type d'affichage
+  const [loadingState, setLoadingState] = useState<string>('waiting'); // État pour gérer le type d'affichage
   const router = useRouter();
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children, 
 
     ws.onopen = () => {
       setIsConnected(true);
-      console.log("WebSocket connected");
+      console.log('WebSocket connected');
     };
 
     ws.onmessage = (event: MessageEvent) => {
@@ -31,9 +31,9 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children, 
         const startExpectedPath = `/${currentTeam}/loading`;
 
         // Vérifie si on est sur la page "loading" et si l'événement "startGame" est reçu
-        if (currentPath === startExpectedPath && parsedMessage.event === "startGame") {
+        if (currentPath === startExpectedPath && parsedMessage.event === 'startGame') {
           console.log('Événement "start" reçu, redirection avec "countdown"...');
-          setLoadingState("starting"); // Mise à jour de l'état
+          setLoadingState('starting'); // Mise à jour de l'état
           setTimeout(() => {
             router.push(`/${currentTeam}/countdown`); // Redirection après un délai de 1 seconde
           }, 1000);
@@ -43,8 +43,8 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children, 
         }
 
         // Gestion des autres événements
-        if (parsedMessage.event === "waitingForPlayers") {
-          setLoadingState("waiting"); // Met à jour l'état pour "waiting"
+        if (parsedMessage.event === 'waitingForPlayers') {
+          setLoadingState('waiting'); // Met à jour l'état pour "waiting"
         } else if (parsedMessage.data?.team === currentTeam) {
           // Traite les messages spécifiques à l'équipe courante
           setMessages((prev) => [...prev, message]);
@@ -55,17 +55,17 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children, 
           }
         }
       } catch (error) {
-        console.error("Failed to parse WebSocket message:", error);
+        console.error('Failed to parse WebSocket message:', error);
       }
     };
 
     ws.onclose = () => {
       setIsConnected(false);
-      console.log("WebSocket disconnected");
+      console.log('WebSocket disconnected');
     };
 
     ws.onerror = (error) => {
-      console.error("WebSocket error:", error);
+      console.error('WebSocket error:', error);
     };
 
     setSocket(ws);
@@ -79,7 +79,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children, 
     if (socket && socket.readyState === WebSocket.OPEN) {
       socket.send(JSON.stringify(message));
     } else {
-      console.warn("WebSocket is not connected");
+      console.warn('WebSocket is not connected');
     }
   };
 
@@ -93,7 +93,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children, 
 export const useWebSocket = (): WebSocketContextType => {
   const context = useContext(WebSocketContext);
   if (!context) {
-    throw new Error("useWebSocket must be used within a WebSocketProvider");
+    throw new Error('useWebSocket must be used within a WebSocketProvider');
   }
   return context;
 };

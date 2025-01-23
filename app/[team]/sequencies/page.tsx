@@ -1,4 +1,4 @@
-import Sequencies from "../../components/sequencies/Sequencies";
+import Sequencies from '../../components/sequencies/Sequencies';
 
 export default function SequenciesPage() {
   return (

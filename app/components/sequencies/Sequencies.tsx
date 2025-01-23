@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useParams } from "next/navigation";
-import ButtonList from "../../api/ButtonList.json";
-import { Team } from "@/app/types";
+import { useParams } from 'next/navigation';
+import ButtonList from '../../api/ButtonList.json';
+import { Team } from '@/app/types';
 
 const Sequencies = () => {
   const { team } = useParams();
@@ -13,10 +13,10 @@ const Sequencies = () => {
   return (
     <>
       <h1>Sequencie</h1>
-      <h2>{team === Team.TEAM_A ? "Team A" : "Team B"}</h2>
+      <h2>{team === Team.TEAM_A ? 'Team A' : 'Team B'}</h2>
       <ul>
         {buttons.map((button) => (
-          <li key={button.id} style={{ color: button.pressed ? "red" : "black" }}>
+          <li key={button.id} style={{ color: button.pressed ? 'red' : 'black' }}>
             {button.number}
           </li>
         ))}

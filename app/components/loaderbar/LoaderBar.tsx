@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 type ProgressBarProps = {
   scoreA: number;
@@ -54,22 +54,22 @@ const LoaderBar = ({ scoreA, scoreB }: ProgressBarProps) => {
 
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
-    display: "flex",
-    width: "100%",
-    height: "30px",
-    backgroundColor: "#e0e0e0",
-    borderRadius: "5px",
-    overflow: "hidden",
+    display: 'flex',
+    width: '100%',
+    height: '30px',
+    backgroundColor: '#e0e0e0',
+    borderRadius: '5px',
+    overflow: 'hidden',
   },
   bar: {
-    height: "100%",
-    transition: "width 0.3s ease",
+    height: '100%',
+    transition: 'width 0.3s ease',
   },
   purpleBar: {
-    backgroundColor: "purple",
+    backgroundColor: 'purple',
   },
   greenBar: {
-    backgroundColor: "green",
+    backgroundColor: 'green',
   },
 };
 

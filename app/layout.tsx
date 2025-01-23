@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import "./globals.css";
-import { WebSocketProvider } from "./context/WebSocketContext";
-import { usePathname } from "next/navigation";
-import { Team } from "./types";
+import './globals.css';
+import { WebSocketProvider } from './context/WebSocketContext';
+import { usePathname } from 'next/navigation';
+import { Team } from './types';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();

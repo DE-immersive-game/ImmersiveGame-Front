@@ -1,20 +1,20 @@
 export enum Team {
-  TEAM_A = "team_a",
-  TEAM_B = "team_b",
+  TEAM_A = 'team_a',
+  TEAM_B = 'team_b',
 }
 
 export type WebSocketEvent =
-  | "start"
-  | "win"
-  | "lose"
-  | "update"
-  | "countdown"
-  | "test"
-  | "loadindLight"
-  | "startGame"
-  | "resetGame"
-  | "pauseGame"
-  | "waitingForPlayers";
+  | 'start'
+  | 'win'
+  | 'lose'
+  | 'update'
+  | 'countdown'
+  | 'test'
+  | 'loadindLight'
+  | 'startGame'
+  | 'resetGame'
+  | 'pauseGame'
+  | 'waitingForPlayers';
 
 export type Score = {
   team_a: number;
@@ -22,7 +22,7 @@ export type Score = {
   winner: Team;
 };
 
-export type ScoreResult = "win" | "lose";
+export type ScoreResult = 'win' | 'lose';
 
 export interface WebSocketData {
   team?: Team;

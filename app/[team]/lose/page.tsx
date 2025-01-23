@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { useParams } from "next/navigation";
-import Result from "@/app/components/result/Result";
-import { Score, Team } from "@/app/types";
+import { useParams } from 'next/navigation';
+import Result from '@/app/components/result/Result';
+import { Score, Team } from '@/app/types';
 
 const LosePage = () => {
   const params = useParams();
-  const team = (typeof params.team === "string" ? params.team : "") as Team;
+  const team = (typeof params.team === 'string' ? params.team : '') as Team;
 
   if (![Team.TEAM_A, Team.TEAM_B].includes(team)) {
     return <div>Équipe invalide ou non trouvée</div>;
   }
 
   const scoreResponse: { event: string; data: Score } = {
-    event: "teamScore",
+    event: 'teamScore',
     data: {
       team_a: 4,
       team_b: 5,

@@ -21,28 +21,16 @@ const AdminPage: React.FC = () => {
       <h1>Admin Page</h1>
       <p>{isConnected ? 'Connected to WebSocket' : 'Not connected to WebSocket'}</p>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '20px' }}>
-        <button
-          onClick={() => handleSendEvent('loadindLight')}
-          disabled={!isConnected}
-        >
+        <button onClick={() => handleSendEvent('loadindLight')} disabled={!isConnected}>
           Send "loadingLight" Event
         </button>
-        <button
-          onClick={() => handleSendEvent('startGame')}
-          disabled={!isConnected}
-        >
+        <button onClick={() => handleSendEvent('startGame')} disabled={!isConnected}>
           Start
         </button>
-        <button
-          onClick={() => handleSendEvent('resetGame')}
-          disabled={!isConnected}
-        >
+        <button onClick={() => handleSendEvent('resetGame')} disabled={!isConnected}>
           Reset
         </button>
-        <button
-          onClick={() => handleSendEvent('pauseGame')}
-          disabled={!isConnected}
-        >
+        <button onClick={() => handleSendEvent('pauseGame')} disabled={!isConnected}>
           Pause
         </button>
       </div>
