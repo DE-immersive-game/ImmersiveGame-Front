@@ -21,8 +21,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <h2 className="font-orbitron  text-[80px]">Edenys</h2>
-
         <WebSocketProvider currentTeam={team}>{children}</WebSocketProvider>
       </body>
     </html>
