@@ -52,9 +52,9 @@ const Admin = () => {
                           width="161.706"
                           height="184.786"
                           filterUnits="userSpaceOnUse"
-                          color-interpolation-filters="sRGB"
+                          colorInterpolationFilters="sRGB"
                         >
-                          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                          <feFlood floodOpacity="0" result="BackgroundImageFix" />
                           <feColorMatrix
                             in="SourceAlpha"
                             type="matrix"
@@ -120,9 +120,9 @@ const Admin = () => {
                           width="193.636"
                           height="184.248"
                           filterUnits="userSpaceOnUse"
-                          color-interpolation-filters="sRGB"
+                          colorInterpolationFilters="sRGB"
                         >
-                          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                          <feFlood floodOpacity="0" result="BackgroundImageFix" />
                           <feColorMatrix
                             in="SourceAlpha"
                             type="matrix"
@@ -166,10 +166,10 @@ const Admin = () => {
                         <path
                           d="M122.275 89.8974C121.388 96.6655 118.674 103.064 114.426 108.408C110.179 113.751 104.556 117.837 98.1627 120.228C91.7691 122.619 84.8452 123.224 78.1336 121.979C71.4221 120.734 65.176 117.685 60.0654 113.16C54.9548 108.635 51.1724 102.804 49.1239 96.2928C47.0753 89.7814 46.8379 82.8351 48.4371 76.199C50.0363 69.5629 53.4117 63.4873 58.2014 58.6238C62.9911 53.7602 69.0144 50.2923 75.6253 48.5918C93.9515 43.8916 112.922 53.3249 119.925 70.9038M122.59 47.4027V70.9039H99.0886"
                           stroke="#E702FF"
-                          stroke-width="12.5366"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          shape-rendering="crispEdges"
+                          strokeWidth="12.5366"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          shapeRendering="crispEdges"
                         />
                       </g>
                       <defs>
@@ -180,9 +180,9 @@ const Admin = () => {
                           width="192.206"
                           height="192.228"
                           filterUnits="userSpaceOnUse"
-                          color-interpolation-filters="sRGB"
+                          colorInterpolationFilters="sRGB"
                         >
-                          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                          <feFlood floodOpacity="0" result="BackgroundImageFix" />
                           <feColorMatrix
                             in="SourceAlpha"
                             type="matrix"

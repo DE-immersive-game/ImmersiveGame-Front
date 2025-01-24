@@ -6,12 +6,11 @@ import Result from '@/app/components/result/Result';
 import { Score, Team } from '@/app/types';
 import { useWebSocket } from '@/app/context/WebSocketUsage';
 
-const WinPage = () => {
+const DrawPage = () => {
   const params = useParams();
   const { registerEventHandler, unregisterEventHandler } = useWebSocket();
   const [score, setScore] = useState<Score | null>(null);
 
-  // Récupération de l'équipe depuis les paramètres de l'URL
   const team = (typeof params.team === 'string' ? params.team : '') as Team;
 
   if (![Team.TEAM_A, Team.TEAM_B].includes(team)) {
@@ -19,9 +18,9 @@ const WinPage = () => {
   }
 
   useEffect(() => {
-    const handleTeamScore = (data: { team_a: number; team_b: number; result: string }) => {
-      const { team_a, team_b, result } = data;
-      const winner = result === 'draw' ? 'draw' : team_a > team_b ? Team.TEAM_A : Team.TEAM_B;
+    const handleTeamScore = (data: { team_a: number; team_b: number }) => {
+      const { team_a, team_b } = data;
+      const winner = team_a === team_b ? 'draw' : team_a > team_b ? Team.TEAM_A : Team.TEAM_B;
 
       setScore({
         team_a,
@@ -41,19 +40,15 @@ const WinPage = () => {
     return <div className="text-center text-white text-3xl">Chargement des scores...</div>;
   }
 
-  if (score.winner === 'draw' || score.winner !== team) {
-    return (
-      <div className="text-center text-white text-3xl">
-        Cette équipe n'a pas gagné ou le résultat est une égalité
-      </div>
-    );
+  if (score.winner !== 'draw') {
+    return <div className="text-center text-white text-3xl">Le résultat n'est pas une égalité</div>;
   }
 
   return (
     <div>
-      <Result team={team} score={score} resultType="win" mode="tv" />
+      <Result team="draw" score={score} resultType="draw" mode="tv" />
     </div>
   );
 };
 
-export default WinPage;
+export default DrawPage;

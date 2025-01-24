@@ -19,9 +19,9 @@ const LosePage = () => {
   }
 
   useEffect(() => {
-    const handleTeamScore = (data: { team_a: number; team_b: number }) => {
-      const { team_a, team_b } = data;
-      const winner = team_a > team_b ? Team.TEAM_A : Team.TEAM_B;
+    const handleTeamScore = (data: { team_a: number; team_b: number; result: string }) => {
+      const { team_a, team_b, result } = data;
+      const winner = result === 'draw' ? 'draw' : team_a > team_b ? Team.TEAM_A : Team.TEAM_B;
 
       setScore({
         team_a,
@@ -41,9 +41,13 @@ const LosePage = () => {
     return <div className="text-center text-white text-3xl">Chargement des scores...</div>;
   }
 
-  // Vérifier si l'équipe dans les paramètres est celle qui a perdu
-  if (score.winner === team) {
-    return <div className="text-center text-white text-3xl">Cette équipe n'a pas perdu</div>;
+  // Vérifier si l'équipe a effectivement perdu
+  if (score.winner === 'draw' || score.winner === team) {
+    return (
+      <div className="text-center text-white text-3xl">
+        Cette équipe n'a pas perdu ou le résultat est une égalité
+      </div>
+    );
   }
 
   return (
