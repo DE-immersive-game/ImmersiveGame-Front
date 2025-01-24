@@ -12,6 +12,7 @@ const ScorePage = () => {
   useEffect(() => {
     const handleTeamScore = (data: any) => {
       const { team_a, team_b, result } = data;
+      // Determine the winner or handle draw case
       const winner = result === 'draw' ? 'draw' : team_a > team_b ? Team.TEAM_A : Team.TEAM_B;
 
       setScore({
@@ -33,9 +34,19 @@ const ScorePage = () => {
   }
 
   const resultType: ScoreResult | 'draw' =
-    score.winner === 'draw' ? 'draw' : score.winner === Team.TEAM_A ? 'win' : 'lose';
+    score.winner === 'draw'
+      ? 'draw'
+      : score.winner === Team.TEAM_A
+      ? 'win'
+      : score.winner === Team.TEAM_B
+      ? 'win'
+      : 'lose';
 
-  return <Result team={score.winner} score={score} resultType={resultType} mode="tv" />;
+  if (resultType === 'win' || resultType === 'draw') {
+    return <Result team={score.winner} score={score} resultType={resultType} mode="tv" />;
+  }
+
+  return <div>No result to display</div>;
 };
 
 export default ScorePage;
