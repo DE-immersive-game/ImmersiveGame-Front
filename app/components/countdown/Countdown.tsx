@@ -14,7 +14,7 @@ const CountdownScreen = ({ team }: CountdownScreenProps) => {
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center text-neutral-text">
       <div
-        className="absolute inset-0 z-0 animate-customPulse"
+        className="absolute inset-0 z-0 animate-customPulse bg-center bg-cover"
         style={{
           backgroundImage: `url(${currentTeamResources.background})`,
         }}
