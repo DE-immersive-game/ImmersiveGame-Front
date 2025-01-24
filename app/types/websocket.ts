@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from 'react';
+
 export enum Team {
   TEAM_A = 'team_a',
   TEAM_B = 'team_b',
@@ -12,9 +14,7 @@ export type WebSocketEvent =
   | 'test'
   | 'loadindLight'
   | 'startGame'
-  | 'resetGame'
-  | 'pauseGame'
-  | 'waitingForPlayers';
+  | 'resetGame';
 
 export type Score = {
   team_a: number;
@@ -36,11 +36,20 @@ export interface WebSocketMessage {
   data?: WebSocketData;
 }
 
+export interface WebSocketMessageWithTime {
+  message: string;
+  time: string;
+}
+
 export interface WebSocketContextType {
   isConnected: boolean;
-  messages: string[];
+  receivedMessages: WebSocketMessageWithTime[];
+  sentMessages: WebSocketMessageWithTime[];
   sendMessage: (message: WebSocketMessage) => void;
   loadingState: string;
+  setLoadingState: Dispatch<SetStateAction<string>>;
+  registerEventHandler: (event: WebSocketEvent, handler: (data: any) => void) => void;
+  unregisterEventHandler: (event: WebSocketEvent, handler: (data: any) => void) => void;
 }
 
 export interface WebSocketState {
