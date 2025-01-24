@@ -1,4 +1,4 @@
-import LoaderBar from "../loaderbar/LoaderBar";
+import LoaderBar from '../loaderbar/LoaderBar';
 
 const Score = () => {
   const scoreA = 0;

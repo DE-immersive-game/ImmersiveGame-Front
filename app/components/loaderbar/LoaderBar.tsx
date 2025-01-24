@@ -1,19 +1,19 @@
-import { cn } from "@/lib/utils";
-import React from "react";
+import { cn } from '@/lib/utils';
+import React from 'react';
 
-interface ProgressBarProps {
-  scoreA: number; // A team
-  scoreB: number; // B Team
-}
+type ProgressBarProps = {
+  scoreA: number;
+  scoreB: number;
+};
 
-const LoaderBar: React.FC<ProgressBarProps> = ({ scoreA, scoreB }) => {
+const LoaderBar = ({ scoreA, scoreB }: ProgressBarProps) => {
   const scoreDifference = scoreA - scoreB;
 
   // Determine bar state based on score difference
   let APercentage = 50; // Default is 50% - 50%
   let BPercentage = 50;
 
-  console.log("scoreDifference", scoreDifference);
+  console.log('scoreDifference', scoreDifference);
 
   if (scoreDifference >= 3) {
     APercentage = 100;
@@ -35,23 +35,23 @@ const LoaderBar: React.FC<ProgressBarProps> = ({ scoreA, scoreB }) => {
     BPercentage = 100;
   }
 
-  console.log("APercentage", APercentage);
-  console.log("BPercentage", BPercentage);
+  console.log('APercentage', APercentage);
+  console.log('BPercentage', BPercentage);
 
   return (
     <div className="relative h-[2.315vh] bg-gray-800 rounded-full ">
       {/* Barre de l'équipe A */}
       <div
         className={cn(
-          "absolute h-full bg-natural-gradient shadow-[0px_0px_43px_1px_#7FFD50] rounded-l-full",
-          scoreDifference >= 3 && "rounded-r-full"
+          'absolute h-full bg-natural-gradient shadow-[0px_0px_43px_1px_#7FFD50] rounded-l-full',
+          scoreDifference >= 3 && 'rounded-r-full',
         )}
         style={{ ...styles.bar, width: `${APercentage}%` }}
       >
         <div
           className={cn(
-            "h-full w-full overflow-hidden relative  rounded-l-full",
-            scoreDifference >= 3 && "rounded-r-full"
+            'h-full w-full overflow-hidden relative  rounded-l-full',
+            scoreDifference >= 3 && 'rounded-r-full',
           )}
         >
           <div className="absolute inset-0 animate-green-slide bg-gradient-to-r from-transparent via-transparent to-white opacity-40  "></div>
@@ -61,15 +61,15 @@ const LoaderBar: React.FC<ProgressBarProps> = ({ scoreA, scoreB }) => {
       {/* Barre de l'équipe B */}
       <div
         className={cn(
-          "absolute h-full bg-futuristic-gradient right-0   shadow-[0px_0px_43px_1px_#7757FF]  rounded-r-full ",
-          scoreDifference <= -3 && "rounded-l-full"
+          'absolute h-full bg-futuristic-gradient right-0   shadow-[0px_0px_43px_1px_#7757FF]  rounded-r-full ',
+          scoreDifference <= -3 && 'rounded-l-full',
         )}
         style={{ ...styles.bar, width: `${BPercentage}%` }}
       >
         <div
           className={cn(
-            "h-full w-full overflow-hidden relative  rounded-r-full ",
-            scoreDifference <= -3 && "rounded-l-full"
+            'h-full w-full overflow-hidden relative  rounded-r-full ',
+            scoreDifference <= -3 && 'rounded-l-full',
           )}
         >
           <div className="absolute inset-0 animate-purple-slide bg-gradient-to-l from-transparent via-transparent to-white opacity-20 "></div>
@@ -81,15 +81,15 @@ const LoaderBar: React.FC<ProgressBarProps> = ({ scoreA, scoreB }) => {
 
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
-    display: "flex",
-    height: "30px",
-    backgroundColor: "#e0e0e0",
-    borderRadius: "5px",
-    overflow: "hidden",
+    display: 'flex',
+    height: '30px',
+    backgroundColor: '#e0e0e0',
+    borderRadius: '5px',
+    overflow: 'hidden',
   },
   bar: {
-    height: "100%",
-    transition: "width 0.3s ease",
+    height: '100%',
+    transition: 'width 0.3s ease',
   },
 };
 
