@@ -39,11 +39,11 @@ const LoaderBar = ({ scoreA, scoreB }: ProgressBarProps) => {
   console.log('BPercentage', BPercentage);
 
   return (
-    <div className="relative h-[2.315vh] bg-gray-800 rounded-full ">
+    <div className="relative h-[2vh] bg-gray-800 rounded-full ">
       {/* Barre de l'équipe A */}
       <div
         className={cn(
-          'absolute h-full bg-natural-gradient shadow-[0px_0px_43px_1px_#7FFD50] rounded-l-full',
+          'absolute h-full bg-natural-gradient shadow-[0px_0px_43px_1px_#0FFA95] rounded-l-full',
           scoreDifference >= 3 && 'rounded-r-full',
         )}
         style={{ ...styles.bar, width: `${APercentage}%` }}
@@ -80,13 +80,6 @@ const LoaderBar = ({ scoreA, scoreB }: ProgressBarProps) => {
 };
 
 const styles: { [key: string]: React.CSSProperties } = {
-  container: {
-    display: 'flex',
-    height: '30px',
-    backgroundColor: '#e0e0e0',
-    borderRadius: '5px',
-    overflow: 'hidden',
-  },
   bar: {
     height: '100%',
     transition: 'width 0.3s ease',
