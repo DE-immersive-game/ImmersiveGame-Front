@@ -6,19 +6,32 @@ import Image from 'next/image';
 import Icon from '../icon/Icon';
 
 type ResultProps = {
-  team: Team;
-  resultType: ScoreResult;
+  team: Team | 'draw';
+  resultType: ScoreResult | 'draw';
   score: Score;
   mode?: 'default' | 'tv';
 };
 
 const Result = ({ team, resultType, score, mode = 'default' }: ResultProps) => {
-  const currentTeamResources = teamsRessources[team];
+  let currentTeamResources;
+  let background;
 
-  const background =
+  if (team === 'draw') {
+    currentTeamResources = {
+      name: 'Match Nul',
+      background: '/backgrounds/background-draw.png',
+      logo: '/logos/Neutral.png',
+      logoLong: '/logos/Neutral-long.png',
+    };
+  } else {
+    currentTeamResources = teamsRessources[team as Team];
+  }
+
+  background =
     resultType === 'lose' ? currentTeamResources.loseBackground : currentTeamResources.background;
 
-  const resultText = resultType === 'win' ? 'Victoire' : 'Defaite';
+  const resultText =
+    resultType === 'win' ? 'Victoire' : resultType === 'lose' ? 'Defaite' : 'Egalite';
 
   return (
     <div className="relative">
@@ -39,9 +52,9 @@ const Result = ({ team, resultType, score, mode = 'default' }: ResultProps) => {
           >
             {resultText}
           </h1>
-          {mode === 'tv' && (
+          {mode === 'tv' && resultType !== 'draw' && (
             <h2 className="font-orbitron text-4xl text-white tracking-[.25em]">
-              de {teamsRessources[score.winner].name}
+              de {teamsRessources[score.winner as Team].name}
             </h2>
           )}
         </div>

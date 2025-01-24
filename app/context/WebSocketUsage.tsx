@@ -58,7 +58,6 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children, 
           { message: JSON.stringify(parsedMessage), time: currentTime },
         ]);
 
-        // Execute registered handlers for this event
         const handlers = eventHandlers[parsedMessage.event] || [];
         handlers.forEach((handler) => handler(parsedMessage.data));
       } catch (error) {
