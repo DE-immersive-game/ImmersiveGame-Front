@@ -1,11 +1,31 @@
-'use client'; // Directive pour indiquer un composant client
+'use client';
 
 import React, { useEffect, useState } from 'react';
 
-const Timer: React.FC = () => {
+interface TimerProps {
+  onStart: boolean; // Prop pour démarrer le timer
+  onStop: boolean; // Prop pour arrêter le timer
+}
+
+const Timer: React.FC<TimerProps> = ({ onStart, onStop }) => {
   const [timeLeft, setTimeLeft] = useState(3 * 60); // 3 minutes en secondes
+  const [isRunning, setIsRunning] = useState(false); // État pour savoir si le timer tourne
 
   useEffect(() => {
+    if (onStart) {
+      setIsRunning(true); // Démarre le timer lorsque "onStart" passe à true
+    }
+  }, [onStart]);
+
+  useEffect(() => {
+    if (onStop) {
+      setIsRunning(false); // Arrête le timer lorsque "onStop" passe à true
+    }
+  }, [onStop]);
+
+  useEffect(() => {
+    if (!isRunning) return; // Si le timer n'est pas démarré, ne fait rien
+
     const timer = setInterval(() => {
       setTimeLeft((prevTime) => {
         if (prevTime <= 1) {
@@ -16,8 +36,8 @@ const Timer: React.FC = () => {
       });
     }, 1000);
 
-    return () => clearInterval(timer); // Nettoyage à la fin du composant
-  }, []);
+    return () => clearInterval(timer); // Nettoyage à la fin du composant ou lorsque isRunning passe à false
+  }, [isRunning]);
 
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);

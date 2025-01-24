@@ -10,7 +10,8 @@ import {
   WebSocketEvent,
 } from '../types';
 
-const WEBSOCKET_URL = 'ws://10.14.72.238:8000/admin';
+// const WEBSOCKET_URL = 'ws://10.14.72.238:8000/admin';
+const WEBSOCKET_URL = 'http://localhost:8000/admin';
 
 const WebSocketContext = createContext<WebSocketContextType | undefined>(undefined);
 
