@@ -13,9 +13,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang="en">
-      <body>
-        <WebSocketProvider currentTeam={team}>{children}</WebSocketProvider>
       <body className="overflow-hidden bg-[#020108]">
+        <WebSocketProvider currentTeam={team}>{children}</WebSocketProvider>
+      </body>
     </html>
   );
 }
