@@ -1,24 +1,40 @@
-import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+'use client';
 
-const Countdown = () => {
-  const [count, setCount] = useState(3);
-  const { team } = useParams();
+import { Team } from '@/app/types';
+import { teamsRessources } from '@/lib/teamsRessources';
+import Image from 'next/image';
 
-  useEffect(() => {
-    if (count > 0) {
-      const timer = setTimeout(() => setCount(count - 1), 1000);
-      return () => clearTimeout(timer);
-    } else {
-      window.location.href = `/${team}/sequencies`;
-    }
-  }, [count]);
+type CountdownScreenProps = {
+  team: Team;
+};
+
+const CountdownScreen = ({ team }: CountdownScreenProps) => {
+  const currentTeamResources = teamsRessources[team];
 
   return (
-    <div style={{ textAlign: 'center', fontSize: '48px', color: 'blue' }}>
-      {count > 0 ? <h1>{count}</h1> : <h1></h1>}
+    <div className="relative min-h-screen flex flex-col items-center justify-center text-neutral-text">
+      <div
+        className="absolute inset-0 z-0 animate-customPulse"
+        style={{
+          backgroundImage: `url(${currentTeamResources.background})`,
+        }}
+      ></div>
+      <div className="absolute top-10">
+        <Image
+          src={currentTeamResources.logoLong}
+          alt={`${team} Logo`}
+          width={300}
+          height={300}
+          className="drop-shadow-lg"
+        />
+      </div>
+      <div className="w-full flex justify-center text-center">
+        <div className="w-80 h-80 bg-neutral-text bg-opacity-10 border-2 border-white/40 shadow-inner backdrop-blur-2xl flex items-center justify-center">
+          <h1 className="text-5xl font-bold text-neutral-text">Countdown</h1>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default Countdown;
+export default CountdownScreen;
