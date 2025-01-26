@@ -6,19 +6,40 @@ import Image from 'next/image';
 import Icon from '../icon/Icon';
 
 type ResultProps = {
-  team: Team;
-  resultType: ScoreResult;
+  team: Team | 'draw';
+  resultType: ScoreResult | 'draw';
   score: Score;
   mode?: 'default' | 'tv';
 };
 
 const Result = ({ team, resultType, score, mode = 'default' }: ResultProps) => {
-  const currentTeamResources = teamsRessources[team];
+  let currentTeamResources;
+  let background;
 
-  const background =
-    resultType === 'lose' ? currentTeamResources.loseBackground : currentTeamResources.background;
+  if (resultType === 'lose') {
+    // Utilisez les ressources de l'équipe perdante
+    currentTeamResources = teamsRessources[team as Team];
+    background = currentTeamResources.loseBackground || currentTeamResources.background;
+  } else if (team === 'draw') {
+    // Cas d'égalité
+    currentTeamResources = {
+      name: 'Match Nul',
+      background: '/backgrounds/background-draw.png',
+      logo: '/logos/Neutral.png',
+      logoLong: '/logos/Neutral-long.png',
+    };
+    background = currentTeamResources.background;
+  } else {
+    // Cas général
+    currentTeamResources = teamsRessources[team as Team];
+    background = currentTeamResources.background;
+  }
 
-  const resultText = resultType === 'win' ? 'Victoire' : 'Defaite';
+  const resultText =
+    resultType === 'win' ? 'Victoire' : resultType === 'lose' ? 'Defaite' : 'egalite';
+
+  const isActiveTeamA = resultType === 'lose' ? team === Team.TEAM_A : score.winner === Team.TEAM_A;
+  const isActiveTeamB = resultType === 'lose' ? team === Team.TEAM_B : score.winner === Team.TEAM_B;
 
   return (
     <div className="relative">
@@ -39,21 +60,23 @@ const Result = ({ team, resultType, score, mode = 'default' }: ResultProps) => {
           >
             {resultText}
           </h1>
-          {mode === 'tv' && (
+          {mode === 'tv' && resultType !== 'draw' && (
             <h2 className="font-orbitron text-4xl text-white tracking-[.25em]">
-              de {teamsRessources[score.winner].name}
+              {resultType === 'lose'
+                ? `${currentTeamResources.name}`
+                : `${teamsRessources[score.winner as Team].name}`}
             </h2>
           )}
         </div>
         <div className="flex items-center justify-between bg-neutral-text bg-opacity-5 rounded-2xl py-8 px-10 border-2 border-white/40 shadow-inner">
           <div className="flex items-center gap-12">
-            <Icon team={Team.TEAM_A} isActive={score.winner === Team.TEAM_A} />
+            <Icon team={Team.TEAM_A} isActive={isActiveTeamA} />
             <div className="text-center flex gap-10 font-orbitron font-semibold text-5xl text-neutral-text">
               <p>{score.team_a}</p>
               <p>-</p>
               <p>{score.team_b}</p>
             </div>
-            <Icon team={Team.TEAM_B} isActive={score.winner === Team.TEAM_B} />
+            <Icon team={Team.TEAM_B} isActive={isActiveTeamB} />
           </div>
         </div>
       </div>

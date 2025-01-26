@@ -10,16 +10,23 @@ const LoadingPage = () => {
   const params = useParams();
   const router = useRouter();
   const team = (typeof params.team === 'string' ? params.team : '') as Team;
-  const { loadingState, setLoadingState, registerEventHandler, unregisterEventHandler } =
-    useWebSocket();
+  const {
+    isConnected,
+    loadingState,
+    setLoadingState,
+    registerEventHandler,
+    unregisterEventHandler,
+  } = useWebSocket();
 
   useEffect(() => {
     const handleStartGame = () => {
       console.log('Start game event received');
       setLoadingState('starting');
-      setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         router.push(`/${team}/countdown`);
       }, 1000);
+
+      return () => clearTimeout(timeoutId); // Nettoie le timeout
     };
 
     registerEventHandler('startGame', handleStartGame);
@@ -28,10 +35,6 @@ const LoadingPage = () => {
       unregisterEventHandler('startGame', handleStartGame);
     };
   }, [team, router, setLoadingState, registerEventHandler, unregisterEventHandler]);
-
-  if (!Object.values(Team).includes(team)) {
-    return <div>Équipe invalide ou non trouvée</div>;
-  }
 
   return <LoadingScreen team={team} state={loadingState} />;
 };

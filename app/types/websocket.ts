@@ -14,12 +14,13 @@ export type WebSocketEvent =
   | 'test'
   | 'loadindLight'
   | 'startGame'
-  | 'resetGame';
+  | 'resetGame'
+  | 'teamScore';
 
 export type Score = {
   team_a: number;
   team_b: number;
-  winner: Team;
+  winner: Team | 'draw';
 };
 
 export type ScoreResult = 'win' | 'lose';
