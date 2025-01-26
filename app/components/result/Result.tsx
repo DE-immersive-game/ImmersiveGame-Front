@@ -44,7 +44,7 @@ const Result = ({ team, resultType, score, mode = 'default' }: ResultProps) => {
   return (
     <div className="relative">
       <div
-        className="absolute inset-0 z-0 animate-customPulse bg-center bg-cover"
+        className="absolute inset-0 z-0 animate-background-pulse bg-center bg-cover"
         style={{
           backgroundImage: `url(${background})`,
         }}

@@ -40,7 +40,7 @@ export default function SequenciesPage() {
 
   return (
     <div>
-      <Sequencies />
+      <Sequencies team={team} />
     </div>
   );
 }

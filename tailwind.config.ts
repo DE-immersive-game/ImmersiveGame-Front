@@ -1,6 +1,8 @@
-const defaultTheme = require('tailwindcss/defaultTheme');
+// const defaultTheme = require('tailwindcss/defaultTheme');
+import type { Config } from 'tailwindcss';
+import defaultTheme from 'tailwindcss/defaultTheme';
 
-export default {
+const config = {
   darkMode: ['class'],
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -11,6 +13,7 @@ export default {
     extend: {
       fontFamily: {
         orbitron: ['Orbitron', ...defaultTheme.fontFamily.sans],
+        montserrat: ['Montserrat', ...defaultTheme.fontFamily.sans],
         galaxyItalic: ['galaxyItalic', ...defaultTheme.fontFamily.sans],
         galaxyPoster: ['galaxyPoster', ...defaultTheme.fontFamily.sans],
         galaxyPosterItalic: ['galaxyItalic', ...defaultTheme.fontFamily.sans],
@@ -67,7 +70,7 @@ export default {
           '0%': { transform: 'translateX(100%)' },
           '100%': { transform: 'translateX(-100%)' },
         },
-        customPulse: {
+        'background-pulse': {
           '0%, 100%': {
             transform: 'scale(1)',
           },
@@ -75,11 +78,23 @@ export default {
             transform: 'scale(1.20)',
           },
         },
+        'button-pulse': {
+          '0%': {
+            boxShadow:
+              '0 0 0 0px rgba(72, 229, 229, 1), -4px -4px 20px 4px rgba(72, 229, 229, 0.5) inset, 3px 3px 15px 4px rgba(72, 229, 229, 0.9) inset',
+          },
+
+          '100%': {
+            boxShadow:
+              '0 0 0 20px rgba(72, 229, 229, 0), -4px -4px 20px 4px rgba(72, 229, 229, 0.5) inset, 3px 3px 15px 4px rgba(72, 229, 229, 0.9) inset',
+          },
+        },
       },
       animation: {
         'green-slide': 'slide-right 1.5s linear infinite',
         'purple-slide': 'slide-left 1.5s linear infinite',
-        customPulse: 'customPulse 3s infinite',
+        'background-pulse': 'background-pulse 3s infinite',
+        'button-pulse': 'button-pulse 1.5s infinite',
       },
       boxShadow: {
         'custom-text': '0px 0px 44px 0px rgba(255, 255, 255, 0.75)',
@@ -87,4 +102,6 @@ export default {
     },
     plugins: [],
   },
-};
+} satisfies Config;
+
+export default config;
