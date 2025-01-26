@@ -18,8 +18,7 @@ export type WebSocketEvent =
   | 'teamScore'
   | 'sendSequence'
   | 'currentScore'
-  | 'timerStarted'
-  | 'teamStatus';
+  | 'timer';
 
 export type Score = {
   team_a: number;

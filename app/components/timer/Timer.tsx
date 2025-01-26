@@ -2,82 +2,35 @@
 import { useWebSocket } from '@/app/context/WebSocketUsage';
 import { useEffect, useState } from 'react';
 
-interface TimerProps {
-  initialDuration?: number; // Durée initiale si pas d'événement
-}
+type TimerProps = {};
 
-const Timer: React.FC<TimerProps> = ({ initialDuration = 180 }) => {
+const Timer = ({}: TimerProps) => {
   const { registerEventHandler, unregisterEventHandler } = useWebSocket();
-  const [startTimestamp, setStartTimestamp] = useState<number | undefined>(undefined);
-  const [duration, setDuration] = useState<number>(initialDuration); // Durée totale du timer en secondes
-  const [timeLeft, setTimeLeft] = useState<number>(initialDuration); // Temps restant
-  const [isRunning, setIsRunning] = useState(false);
-  const [stopTimer, setStopTimer] = useState(false);
+  const [counter, setCounter] = useState<number | null>(null);
 
   // Démarrer le timer lorsque l'événement `timerStarted` est reçu
   useEffect(() => {
-    const handleTimerStarted = (message: { startTimestamp?: number; duration?: number }) => {
-      console.log('Message reçu :', message); // Logge le message reçu pour débogage
-
-      if (message?.startTimestamp !== undefined && message?.duration !== undefined) {
-        console.log('startTimestamp reçu :', message.startTimestamp);
-        const { startTimestamp, duration } = message;
-        setStartTimestamp(startTimestamp);
-        setDuration(duration);
-        setTimeLeft(duration); // Initialise le temps restant avec la durée reçue
-        setStopTimer(false);
-        setIsRunning(true); // Démarre le timer lorsque les données sont reçues
+    const handleTimerStarted = (message: { counter?: number }) => {
+      if (message?.counter !== undefined) {
+        setCounter(message.counter);
+        // console.log('Counter reçu :', message.counter);
       } else {
         console.error('Données manquantes ou mal formatées dans le message :', message);
       }
     };
 
     // Enregistre les écouteurs pour les événements WebSocket
-    registerEventHandler('timerStarted', handleTimerStarted);
+    registerEventHandler('timer', handleTimerStarted);
 
     return () => {
-      unregisterEventHandler('timerStarted', handleTimerStarted);
+      unregisterEventHandler('timer', handleTimerStarted);
     };
   }, [registerEventHandler, unregisterEventHandler]);
 
-  // Réinitialiser le timer lorsqu'il reçoit l'événement 'resetGame'
-  useEffect(() => {
-    const handleResetGame = () => {
-      console.log('Resetting timer to 3 minutes');
-      setDuration(180); // Réinitialise la durée à 180 secondes
-      setTimeLeft(180); // Réinitialise le temps restant à 180 secondes
-      setIsRunning(false); // Ne redémarre pas le timer, il attend le startTimestamp
-    };
-
-    // Enregistre l'événement 'resetGame'
-    registerEventHandler('resetGame', handleResetGame);
-
-    return () => {
-      unregisterEventHandler('resetGame', handleResetGame);
-    };
-  }, [registerEventHandler, unregisterEventHandler]);
-
-  // Mise à jour du timer toutes les secondes
-  useEffect(() => {
-    if (!isRunning || stopTimer || startTimestamp === undefined) return;
-
-    const timer = setInterval(() => {
-      if (startTimestamp !== undefined) {
-        const now = Date.now();
-        const elapsed = Math.floor((now - startTimestamp) / 1000); // Temps écoulé en secondes
-        const remainingTime = duration - elapsed;
-
-        if (remainingTime <= 0) {
-          setTimeLeft(0);
-          setIsRunning(false); // Arrête le timer lorsque le temps est écoulé
-        } else {
-          setTimeLeft(remainingTime); // Met à jour le temps restant
-        }
-      }
-    }, 1000);
-
-    return () => clearInterval(timer); // Nettoie le timer
-  }, [isRunning, stopTimer, startTimestamp, duration]);
+  if (counter === null) {
+    console.error("Le compteur n'a pas été initialisé correctement.");
+    return null;
+  }
 
   // Formatage du temps restant en minutes:secondes
   const formatTime = (time: number) => {
@@ -93,10 +46,10 @@ const Timer: React.FC<TimerProps> = ({ initialDuration = 180 }) => {
     >
       <p
         className={`text-[100px] font-orbitron ${
-          timeLeft <= 30 ? 'text-indicative-incorrect-0' : ''
+          counter <= 30 ? 'text-indicative-incorrect-0' : ''
         }`}
       >
-        {formatTime(timeLeft)}
+        {formatTime(counter)}
       </p>
     </div>
   );
