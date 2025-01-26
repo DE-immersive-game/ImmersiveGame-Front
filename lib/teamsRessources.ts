@@ -5,6 +5,7 @@ export const teamsRessources = {
     loseBackground: '/backgrounds/background-defeat-edenys.png',
     logo: '/logos/Edenys.png',
     logoLong: '/logos/Edenys-long.png',
+    mainColor: '#7FFD50',
   },
   team_b: {
     name: 'Nexora',
@@ -12,5 +13,6 @@ export const teamsRessources = {
     loseBackground: '/backgrounds/background-defeat-nexora.png',
     logo: '/logos/Nexora.png',
     logoLong: '/logos/Nexora-long.png',
+    mainColor: '#EF53FF',
   },
 };
