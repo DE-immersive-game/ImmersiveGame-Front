@@ -89,12 +89,22 @@ const config = {
               '0 0 0 20px rgba(72, 229, 229, 0), -4px -4px 20px 4px rgba(72, 229, 229, 0.5) inset, 3px 3px 15px 4px rgba(72, 229, 229, 0.9) inset',
           },
         },
+        fadeInUp: {
+          '0%': { opacity: '0', transform: 'translateY(-20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        fadeAndScale: {
+          '0%': { opacity: '0', transform: 'scale(0.8)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
       },
       animation: {
         'green-slide': 'slide-right 1.5s linear infinite',
         'purple-slide': 'slide-left 1.5s linear infinite',
         'background-pulse': 'background-pulse 3s infinite',
         'button-pulse': 'button-pulse 1.5s infinite',
+        fadeInUp: 'fadeInUp 1s ease forwards',
+        fadeAndScale: 'fadeAndScale 1s ease-in-out',
       },
       boxShadow: {
         'custom-text': '0px 0px 44px 0px rgba(255, 255, 255, 0.75)',
