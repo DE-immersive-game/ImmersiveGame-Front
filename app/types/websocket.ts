@@ -17,7 +17,8 @@ export type WebSocketEvent =
   | 'resetGame'
   | 'teamScore'
   | 'sendSequence'
-  | 'currentScore';
+  | 'currentScore'
+  | 'timerStarted';
 
 export type Score = {
   team_a: number;

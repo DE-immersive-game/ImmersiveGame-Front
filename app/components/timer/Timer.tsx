@@ -1,53 +1,69 @@
-import React, { useEffect, useState } from 'react';
+// components/Timer.tsx
+'use client';
+import { useWebSocket } from '@/app/context/WebSocketUsage';
+import { useEffect, useState } from 'react';
 
 interface TimerProps {
-  startTimestamp: number; // Timestamp du début du jeu
-  duration: number; // Durée totale du timer en secondes
-  onStop: boolean; // Prop pour arrêter le timer
+  initialDuration?: number; // Durée initiale si pas d'événement
 }
 
-const Timer: React.FC<TimerProps> = ({ startTimestamp, duration, onStop }) => {
-  const [timeLeft, setTimeLeft] = useState<number>(duration); // Temps restant
+const Timer: React.FC<TimerProps> = ({ initialDuration = 180 }) => {
+  const { registerEventHandler, unregisterEventHandler } = useWebSocket();
+  const [startTimestamp, setStartTimestamp] = useState<number | undefined>(undefined);
+  const [duration, setDuration] = useState<number>(initialDuration); // Durée totale du timer en secondes
+  const [timeLeft, setTimeLeft] = useState<number>(initialDuration); // Temps restant
   const [isRunning, setIsRunning] = useState(false);
+  const [stopTimer, setStopTimer] = useState(false);
 
+  // Démarrer le timer lorsque l'événement `timerStarted` est reçu
   useEffect(() => {
-    if (startTimestamp) {
-      const now = Date.now();
-      const elapsed = Math.floor((now - startTimestamp) / 1000); // Temps écoulé en secondes
-      const remainingTime = duration - elapsed;
+    const handleTimerStarted = (message: { startTimestamp?: number; duration?: number }) => {
+      console.log('Message reçu :', message); // Logge le message reçu pour débogage
 
-      if (remainingTime > 0) {
-        setTimeLeft(remainingTime); // Synchronise le temps restant
-        setIsRunning(true); // Lance le timer
+      if (message?.startTimestamp !== undefined && message?.duration !== undefined) {
+        console.log('startTimestamp reçu :', message.startTimestamp);
+        const { startTimestamp, duration } = message;
+        setStartTimestamp(startTimestamp);
+        setDuration(duration);
+        setTimeLeft(duration); // Initialise le temps restant avec la durée reçue
+        setStopTimer(false);
+        setIsRunning(true); // Démarre le timer lorsque les données sont reçues
       } else {
-        setTimeLeft(0); // Le timer est terminé
-        setIsRunning(false);
+        console.error('Données manquantes ou mal formatées dans le message :', message);
       }
-    }
-  }, [startTimestamp, duration]);
+    };
 
-  useEffect(() => {
-    if (onStop) {
-      setIsRunning(false); // Arrête le timer si onStop est activé
-    }
-  }, [onStop]);
+    // Enregistre les écouteurs pour les événements WebSocket
+    registerEventHandler('timerStarted', handleTimerStarted);
 
+    return () => {
+      unregisterEventHandler('timerStarted', handleTimerStarted);
+    };
+  }, [registerEventHandler, unregisterEventHandler]);
+
+  // Mise à jour du timer toutes les secondes
   useEffect(() => {
-    if (!isRunning) return;
+    if (!isRunning || stopTimer || startTimestamp === undefined) return;
 
     const timer = setInterval(() => {
-      setTimeLeft((prevTime) => {
-        if (prevTime <= 1) {
-          clearInterval(timer); // Arrête le timer lorsqu'il atteint 0
-          return 0;
+      if (startTimestamp !== undefined) {
+        const now = Date.now();
+        const elapsed = Math.floor((now - startTimestamp) / 1000); // Temps écoulé en secondes
+        const remainingTime = duration - elapsed;
+
+        if (remainingTime <= 0) {
+          setTimeLeft(0);
+          setIsRunning(false); // Arrête le timer lorsque le temps est écoulé
+        } else {
+          setTimeLeft(remainingTime); // Met à jour le temps restant
         }
-        return prevTime - 1;
-      });
+      }
     }, 1000);
 
     return () => clearInterval(timer); // Nettoie le timer
-  }, [isRunning]);
+  }, [isRunning, stopTimer, startTimestamp, duration]);
 
+  // Formatage du temps restant en minutes:secondes
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
@@ -55,8 +71,17 @@ const Timer: React.FC<TimerProps> = ({ startTimestamp, duration, onStop }) => {
   };
 
   return (
-    <div>
-      <p>Temps restant : {formatTime(timeLeft)}</p>
+    <div
+      id="bg-timer"
+      className="text-cyan-50 text-xl bg-[url('/backgrounds/background-timer.png')] bg-contain bg-no-repeat bg-center w-[61vw] h-[38.52vh] flex justify-center items-center"
+    >
+      <p
+        className={`text-[100px] font-orbitron ${
+          timeLeft <= 30 ? 'text-indicative-incorrect-0' : ''
+        }`}
+      >
+        {formatTime(timeLeft)}
+      </p>
     </div>
   );
 };
