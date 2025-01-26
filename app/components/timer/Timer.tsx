@@ -1,34 +1,42 @@
 'use client';
 import { useWebSocket } from '@/app/context/WebSocketUsage';
+import { TimerType } from '@/app/types';
 import { useEffect, useState } from 'react';
 
-type TimerProps = {};
+type TimerProps = { countDown?: number | null };
 
-const Timer = ({}: TimerProps) => {
+const Timer = ({ countDown }: TimerProps) => {
   const { registerEventHandler, unregisterEventHandler } = useWebSocket();
-  const [counter, setCounter] = useState<number | null>(null);
+  const [counter, setCounter] = useState<number | null>(countDown ?? null);
 
+  useEffect(() => {
+    if (countDown) {
+      setCounter(countDown);
+    }
+  }, [countDown]);
   // Démarrer le timer lorsque l'événement `timerStarted` est reçu
   useEffect(() => {
-    const handleTimerStarted = (message: { counter?: number }) => {
-      if (message?.counter !== undefined) {
-        setCounter(message.counter);
-        // console.log('Counter reçu :', message.counter);
-      } else {
-        console.error('Données manquantes ou mal formatées dans le message :', message);
-      }
-    };
+    if (counter === null) {
+      const handleTimerStarted = (message: TimerType) => {
+        if (message?.counter !== undefined) {
+          setCounter(message.counter);
+          // console.log('Counter reçu :', message.counter);
+        } else {
+          console.error('Données manquantes ou mal formatées dans le message :', message);
+        }
+      };
 
-    // Enregistre les écouteurs pour les événements WebSocket
-    registerEventHandler('timer', handleTimerStarted);
+      // Enregistre les écouteurs pour les événements WebSocket
+      registerEventHandler('timer', handleTimerStarted);
 
-    return () => {
-      unregisterEventHandler('timer', handleTimerStarted);
-    };
+      return () => {
+        unregisterEventHandler('timer', handleTimerStarted);
+      };
+    }
   }, [registerEventHandler, unregisterEventHandler]);
 
   if (counter === null) {
-    console.error("Le compteur n'a pas été initialisé correctement.");
+    console.log("Le compteur n'a pas été initialisé correctement.");
     return null;
   }
 

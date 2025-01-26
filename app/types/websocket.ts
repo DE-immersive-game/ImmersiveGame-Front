@@ -28,6 +28,8 @@ export type Score = {
 
 export type ScoreResult = 'win' | 'lose';
 
+export type TimerType = { counter?: number; duration?: number };
+
 export interface WebSocketData {
   team?: Team;
   id?: number;

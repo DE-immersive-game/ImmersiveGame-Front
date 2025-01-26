@@ -5,13 +5,35 @@ import { useRouter, useParams } from 'next/navigation';
 import { useWebSocket } from '@/app/context/WebSocketUsage';
 import CountdownScreen from '@/app/components/countdown/Countdown';
 import Sequencies from '@/app/components/sequencies/Sequencies';
-import { Team } from '@/app/types';
+import { Team, TimerType } from '@/app/types';
 
 const Game = () => {
   const { registerEventHandler, unregisterEventHandler } = useWebSocket();
   const router = useRouter();
   const params = useParams();
   const team = (typeof params.team === 'string' ? params.team : '') as Team;
+  const [counter, setCounter] = useState<number | null>(null);
+  const [duration, setDuration] = useState<number | null>(null);
+
+  // Démarrer le timer lorsque l'événement `timerStarted` est reçu
+  useEffect(() => {
+    const handleTimerStarted = (message: TimerType) => {
+      if (message?.counter !== undefined && message?.duration !== undefined) {
+        setCounter(message.counter);
+        setDuration(message.duration);
+        console.log('Counter reçu :', message.counter);
+      } else {
+        console.error('Données manquantes ou mal formatées dans le message :', message);
+      }
+    };
+
+    // Enregistre les écouteurs pour les événements WebSocket
+    registerEventHandler('timer', handleTimerStarted);
+
+    return () => {
+      unregisterEventHandler('timer', handleTimerStarted);
+    };
+  }, [registerEventHandler, unregisterEventHandler]);
 
   const [sequence, setSequence] = useState<
     { id: number; pressed: boolean; success?: boolean; error?: boolean }[]
@@ -49,7 +71,8 @@ const Game = () => {
           success: index + 1 <= buttonInfo.length,
         })),
       );
-    } else {
+    }
+    if (buttonInfo.team === team && status === 'error') {
       setSequence((prevSequence) =>
         prevSequence.map((button, index) => ({
           ...button,
@@ -102,9 +125,14 @@ const Game = () => {
   return (
     <main>
       {showCountdown ? (
-        <CountdownScreen team={team} onComplete={() => setShowCountdown(false)} />
+        <CountdownScreen
+          team={team}
+          onComplete={() => setShowCountdown(false)}
+          counter={counter}
+          duration={duration}
+        />
       ) : (
-        <Sequencies team={team} sequence={sequence} />
+        <Sequencies team={team} sequence={sequence} counter={counter} />
       )}
     </main>
   );

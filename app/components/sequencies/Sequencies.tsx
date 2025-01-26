@@ -9,9 +9,10 @@ import Timer from '@/app/components/timer/Timer';
 type SequenciesProps = {
   team: Team;
   sequence: { id: number; pressed: boolean; success?: boolean; error?: boolean }[];
+  counter: number | null;
 };
 
-const Sequencies = ({ team, sequence: initialSequence }: SequenciesProps) => {
+const Sequencies = ({ team, sequence: initialSequence, counter }: SequenciesProps) => {
   const [sequence, setSequence] = useState(initialSequence);
   const [error, setError] = useState(false);
   const currentTeamResources = teamsRessources[team];
@@ -30,7 +31,7 @@ const Sequencies = ({ team, sequence: initialSequence }: SequenciesProps) => {
       {error && <div className="sequencies-error w-full min-h-screen absolute top-0 left-0"></div>}
       <div className="w-full min-h-screen flex flex-col gap-4 items-center justify-between px-4 pb-4">
         <div>
-          <Timer />
+          <Timer countDown={counter} />
         </div>
         <div className="w-full flex gap-3 justify-center items-center flex-wrap">
           {sequence.length > 0 ? (

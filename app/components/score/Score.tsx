@@ -1,4 +1,5 @@
 import LoaderBar from '../loaderbar/LoaderBar';
+import Timer from '../timer/Timer';
 
 const Score = () => {
   const scoreA = 11;
@@ -14,7 +15,7 @@ const Score = () => {
       ></div>
       <div className="relative z-10 min-h-screen">
         <div className="w-full min-h-screen px-[4vw] pb-[10vh] flex flex-col gap-4 items-center justify-between">
-          <div className="w-[31vw] h-[15vh] bg-slate-600 "></div>
+          <Timer />
           <div className="flex gap-[6vw] justify-center items-center">
             <div
               className="w-[20vw] h-[52vh] px-[4vw] py-[3vh] flex flex-col gap-[4vw] rounded-[0.6vw] border-[0.2vw] backdrop-blur-[2vw] "
