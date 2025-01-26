@@ -14,13 +14,11 @@ export default function SequenciesPage() {
 
   const [sequence, setSequence] = useState<{ id: number; pressed: boolean }[]>([]);
 
-  // Validation de l'équipe (au cas où)
   if (!Object.values(Team).includes(team)) {
     return <div className="text-center text-white text-3xl">Équipe invalide !</div>;
   }
 
-  const getSequence = (data: { team: Team; sequence: { id: number; pressed: false }[] }) => {
-    console.log(data);
+  const getSequence = (data: { team: Team; sequence: { id: number; pressed: boolean }[] }) => {
     if (data.team === team) {
       setSequence(data.sequence);
     }
@@ -28,6 +26,39 @@ export default function SequenciesPage() {
 
   const getCurrentScore = (data: { team: Team; score: number }) => {
     console.log(data);
+  };
+
+  const handleTeamStatus = (data: { buttonInfo: any; status: string }) => {
+    const { buttonInfo, status } = data;
+
+    console.log(data);
+
+    if (buttonInfo.team === team && status === 'success') {
+      setSequence((prevSequence) =>
+        prevSequence.map((button, index) => ({
+          ...button,
+          success: index + 1 <= buttonInfo.length ? true : false,
+        })),
+      );
+    } else {
+      setSequence((prevSequence) =>
+        prevSequence.map((button, index) => ({
+          ...button,
+          success: false,
+          error: index + 1 <= buttonInfo.length ? true : false,
+        })),
+      );
+
+      // Réinitialiser l'état `error` après une seconde
+      setTimeout(() => {
+        setSequence((prevSequence) =>
+          prevSequence.map((button) => ({
+            ...button,
+            error: false,
+          })),
+        );
+      }, 1000);
+    }
   };
 
   const handleTeamScore = (data: { team_a: number; team_b: number; result: string }) => {
@@ -47,11 +78,13 @@ export default function SequenciesPage() {
     registerEventHandler('sendSequence', getSequence);
     registerEventHandler('teamScore', handleTeamScore);
     registerEventHandler('currentScore', getCurrentScore);
+    registerEventHandler('teamStatus', handleTeamStatus);
 
     return () => {
       unregisterEventHandler('sendSequence', getSequence);
       unregisterEventHandler('teamScore', handleTeamScore);
       unregisterEventHandler('currentScore', getCurrentScore);
+      unregisterEventHandler('teamStatus', handleTeamStatus);
     };
   }, [registerEventHandler, unregisterEventHandler, router, team]);
 
