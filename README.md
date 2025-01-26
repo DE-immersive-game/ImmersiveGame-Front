@@ -34,3 +34,102 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+# Datas envoyées au front
+
+## Types
+
+```bash
+team: TeamType
+export type TeamType = 'team_a' | 'team_b';
+```
+
+```bash
+status: teamStatus
+export type teamStatus = 'success' | 'error';
+```
+
+## Démarrage du jeu
+
+```bash
+{
+  "event": "startGame",
+  "data": { startTimestamp }
+}
+```
+
+```bash
+    startTimestamp = timestamp
+```
+
+## Fin du jeu
+
+```bash
+{
+  "event": "teamScore",
+  "data": score_data,
+}
+```
+
+```bash
+const score_data = {
+      team_a: this.gameStates['team_a'].score,
+      team_b: this.gameStates['team_b'].score,
+      result:
+        this.gameStates['team_a'].score > this.gameStates['team_b'].score
+          ? 'team_a'
+          : this.gameStates['team_a'].score < this.gameStates['team_b'].score
+            ? 'team_b'
+            : 'draw',
+    };
+```
+
+## Score Actuel
+
+```bash
+{
+  "event": "currentScore",
+  "data": data,
+}
+```
+
+```bash
+    const data = {
+      team: team,
+      score: current_score,
+    };
+```
+
+## Reset le jeu
+
+```bash
+{
+  "event": "resetGame",
+  "data": '',
+}
+```
+
+## Envoi de la Séquence
+
+```bash
+{
+  "event": "sendSequence",
+  "data": data,
+}
+```
+
+```bash
+    const data = {
+      team: team,
+      sequence: this.gameStates[team].teamSequence,
+    };
+```
+
+## Verification de la séquence à chaque appui
+
+```bash
+{
+  "event": "teamStatus",
+  "data": [team, status],
+}
+```

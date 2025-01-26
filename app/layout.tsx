@@ -8,6 +8,7 @@ import { Team } from './types';
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
+
   const team = pathname.includes(Team.TEAM_A) ? Team.TEAM_A : Team.TEAM_B;
 
   return (

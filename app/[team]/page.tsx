@@ -1,14 +1,12 @@
 'use client';
 
-import { useRouter, useParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useWebSocket } from '@/app/context/WebSocketUsage';
 
 const TeamPage = () => {
   const params = useParams();
-
   const currentTeam = params?.team ? String(params.team) : null;
-
-  const { isConnected, receivedMessages } = useWebSocket();
+  const { isConnected } = useWebSocket();
 
   return (
     <div>

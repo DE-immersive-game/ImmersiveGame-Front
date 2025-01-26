@@ -8,14 +8,15 @@ import {
   WebSocketProviderProps,
   WebSocketMessageWithTime,
   WebSocketEvent,
+  Score,
+  Team,
 } from '../types';
 
-// const WEBSOCKET_URL = 'ws://10.14.72.238:8000/admin';
-const WEBSOCKET_URL = 'http://localhost:8000/admin';
+const WEBSOCKET_URL = 'ws://localhost:8000/admin';
 
 const WebSocketContext = createContext<WebSocketContextType | undefined>(undefined);
 
-export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children, currentTeam }) => {
+export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }) => {
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [receivedMessages, setReceivedMessages] = useState<WebSocketMessageWithTime[]>([]);
@@ -24,6 +25,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children, 
   const [eventHandlers, setEventHandlers] = useState<
     Record<WebSocketEvent, ((data: any) => void)[]>
   >({} as any);
+  const [lastTeamScore, setLastTeamScore] = useState<Score | null>(null);
   const router = useRouter();
 
   const registerEventHandler = useCallback(
@@ -46,6 +48,17 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children, 
     [],
   );
 
+  // const handleTeamScore = (data: { team_a: number; team_b: number; result: Team | 'draw' }) => {
+  //   const score = {
+  //     team_a: data.team_a,
+  //     team_b: data.team_b,
+  //     winner: data.result,
+  //   };
+
+  //   setLastTeamScore(score);
+  //   // existing event handling logic
+  // };
+
   useEffect(() => {
     const ws = new WebSocket(WEBSOCKET_URL);
 
@@ -59,7 +72,6 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children, 
           { message: JSON.stringify(parsedMessage), time: currentTime },
         ]);
 
-        // Execute registered handlers for this event
         const handlers = eventHandlers[parsedMessage.event] || [];
         handlers.forEach((handler) => handler(parsedMessage.data));
       } catch (error) {
@@ -99,6 +111,8 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children, 
         setLoadingState,
         registerEventHandler,
         unregisterEventHandler,
+        lastTeamScore,
+        setLastTeamScore: (score) => setLastTeamScore(score),
       }}
     >
       {children}

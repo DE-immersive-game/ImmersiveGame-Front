@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
 @font-face {
   font-family: 'galaxyItalic';
@@ -18,6 +19,29 @@
 @font-face {
   font-family: 'galaxyRegular';
   src: url('/public/fonts/EdgeOfTheGalaxyRegular-OVEa6.otf');
+}
+
+@layer utilities {
+  .glassmorphism-shadow {
+    box-shadow: -4px -4px 20px 4px rgba(0, 0, 0, 0.4) inset,
+      3px 3px 15px 0px rgba(255, 255, 255, 0.3) inset;
+  }
+  .glassmorphism-shadow-clicked {
+    box-shadow: -4px -4px 20px 4px rgba(72, 229, 229, 0.5) inset,
+      3px 3px 15px 4px rgba(72, 229, 229, 0.9) inset;
+  }
+  .glassmorphism-shadow-error {
+    box-shadow: -4px -4px 20px 4px rgba(229, 72, 72, 0.5) inset,
+      3px 3px 15px 4px rgba(229, 72, 72, 0.5) inset;
+  }
+  .sequencies-error {
+    background: linear-gradient(
+      180deg,
+      rgba(229, 72, 72, 0.3) 0%,
+      rgba(229, 72, 72, 0) 50%,
+      rgba(229, 72, 72, 0.3) 100%
+    );
+  }
 }
 
 @tailwind base;
