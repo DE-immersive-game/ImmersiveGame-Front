@@ -8,10 +8,9 @@ import { useWebSocket } from '@/app/context/WebSocketUsage';
 
 const LosePage = () => {
   const params = useParams();
-  const { registerEventHandler, unregisterEventHandler } = useWebSocket();
+  const { registerEventHandler, unregisterEventHandler, receivedMessages } = useWebSocket();
   const [score, setScore] = useState<Score | null>(null);
 
-  // Récupération de l'équipe depuis les paramètres de l'URL
   const team = (typeof params.team === 'string' ? params.team : '') as Team;
 
   if (![Team.TEAM_A, Team.TEAM_B].includes(team)) {
@@ -19,6 +18,23 @@ const LosePage = () => {
   }
 
   useEffect(() => {
+    // Récupérer le dernier message 'teamScore'
+    const lastTeamScoreMessage = receivedMessages
+      .map((msg) => JSON.parse(msg.message))
+      .reverse()
+      .find((msg) => msg.event === 'teamScore');
+
+    if (lastTeamScoreMessage) {
+      const { team_a, team_b, result } = lastTeamScoreMessage.data;
+      const winner = result === 'draw' ? 'draw' : team_a > team_b ? Team.TEAM_A : Team.TEAM_B;
+
+      setScore({
+        team_a,
+        team_b,
+        winner,
+      });
+    }
+
     const handleTeamScore = (data: { team_a: number; team_b: number; result: string }) => {
       const { team_a, team_b, result } = data;
       const winner = result === 'draw' ? 'draw' : team_a > team_b ? Team.TEAM_A : Team.TEAM_B;
@@ -35,13 +51,12 @@ const LosePage = () => {
     return () => {
       unregisterEventHandler('teamScore', handleTeamScore);
     };
-  }, [registerEventHandler, unregisterEventHandler]);
+  }, [registerEventHandler, unregisterEventHandler, receivedMessages]);
 
   if (!score) {
     return <div className="text-center text-white text-3xl">Chargement des scores...</div>;
   }
 
-  // Vérifier si l'équipe a effectivement perdu
   if (score.winner === 'draw' || score.winner === team) {
     return (
       <div className="text-center text-white text-3xl">

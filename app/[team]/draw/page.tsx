@@ -8,7 +8,7 @@ import { useWebSocket } from '@/app/context/WebSocketUsage';
 
 const DrawPage = () => {
   const params = useParams();
-  const { registerEventHandler, unregisterEventHandler } = useWebSocket();
+  const { registerEventHandler, unregisterEventHandler, receivedMessages } = useWebSocket();
   const [score, setScore] = useState<Score | null>(null);
 
   const team = (typeof params.team === 'string' ? params.team : '') as Team;
@@ -18,6 +18,23 @@ const DrawPage = () => {
   }
 
   useEffect(() => {
+    // Récupérer le dernier message 'teamScore' si disponible
+    const lastTeamScoreMessage = receivedMessages
+      .map((msg) => JSON.parse(msg.message))
+      .reverse()
+      .find((msg) => msg.event === 'teamScore');
+
+    if (lastTeamScoreMessage) {
+      const { team_a, team_b } = lastTeamScoreMessage.data;
+      const winner = team_a === team_b ? 'draw' : team_a > team_b ? Team.TEAM_A : Team.TEAM_B;
+
+      setScore({
+        team_a,
+        team_b,
+        winner,
+      });
+    }
+
     const handleTeamScore = (data: { team_a: number; team_b: number }) => {
       const { team_a, team_b } = data;
       const winner = team_a === team_b ? 'draw' : team_a > team_b ? Team.TEAM_A : Team.TEAM_B;
@@ -34,7 +51,7 @@ const DrawPage = () => {
     return () => {
       unregisterEventHandler('teamScore', handleTeamScore);
     };
-  }, [registerEventHandler, unregisterEventHandler]);
+  }, [registerEventHandler, unregisterEventHandler, receivedMessages]);
 
   if (!score) {
     return <div className="text-center text-white text-3xl">Chargement des scores...</div>;
