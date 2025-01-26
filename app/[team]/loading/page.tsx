@@ -23,7 +23,7 @@ const LoadingPage = () => {
       console.log('Start game event received');
       setLoadingState('starting');
       const timeoutId = setTimeout(() => {
-        router.push(`/${team}/countdown`);
+        router.push(`/${team}/game`);
       }, 1000);
 
       return () => clearTimeout(timeoutId); // Nettoie le timeout

@@ -1,56 +1,30 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useWebSocket } from '@/app/context/WebSocketUsage';
 import { Team } from '@/app/types';
-import Number from '../number/Number';
 import { teamsRessources } from '@/lib/teamsRessources';
-import Timer from '../timer/Timer';
+import Number from '@/app/components/number/Number';
+import Timer from '@/app/components/timer/Timer';
 
 type SequenciesProps = {
   team: Team;
+  sequence: { id: number; pressed: boolean; success?: boolean; error?: boolean }[];
 };
 
-const Sequencies = ({ team = Team.TEAM_A }: SequenciesProps) => {
-  const { registerEventHandler, unregisterEventHandler, lastSequence } = useWebSocket();
-  const [sequence, setSequence] = useState<
-    { id: number; pressed: boolean; success?: boolean; error?: boolean }[]
-  >(lastSequence || []); // Utilise la dernière séquence sauvegardée si disponible
+const Sequencies = ({ team, sequence: initialSequence }: SequenciesProps) => {
+  const [sequence, setSequence] = useState(initialSequence);
   const [error, setError] = useState(false);
-
-  const currentTeamRessources = teamsRessources[team];
-
-  // Gestion de l'événement "sendSequence"
-  const handleSequenceUpdate = (data: {
-    team: Team;
-    sequence: { id: number; pressed: boolean }[];
-  }) => {
-    if (data.team === team) {
-      setSequence(
-        data.sequence.map((item) => ({
-          ...item,
-          success: false,
-          error: false,
-        })),
-      );
-    }
-  };
+  const currentTeamResources = teamsRessources[team];
 
   useEffect(() => {
-    // Enregistre l'écouteur d'événements pour "sendSequence"
-    registerEventHandler('sendSequence', handleSequenceUpdate);
-
-    return () => {
-      // Nettoie l'écouteur d'événements à la destruction du composant
-      unregisterEventHandler('sendSequence', handleSequenceUpdate);
-    };
-  }, [registerEventHandler, unregisterEventHandler, team]);
+    setSequence(initialSequence);
+  }, [initialSequence]);
 
   return (
     <div
       className="relative z-10 min-h-screen bg-no-repeat bg-center bg-cover"
       style={{
-        backgroundImage: `url(${currentTeamRessources.background})`,
+        backgroundImage: `url(${currentTeamResources.background})`,
       }}
     >
       {error && <div className="sequencies-error w-full min-h-screen absolute top-0 left-0"></div>}
