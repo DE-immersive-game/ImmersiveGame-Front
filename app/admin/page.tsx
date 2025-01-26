@@ -1,3 +1,7 @@
-export default function Admin() {
-  return <h1>Admin</h1>;
-}
+import Admin from '../components/admin/Admin';
+
+const AdminPage: React.FC = () => {
+  return <Admin />;
+};
+
+export default AdminPage;
