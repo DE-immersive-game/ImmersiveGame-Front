@@ -1,4 +1,3 @@
-// components/Timer.tsx
 'use client';
 import { useWebSocket } from '@/app/context/WebSocketUsage';
 import { useEffect, useState } from 'react';
@@ -38,6 +37,23 @@ const Timer: React.FC<TimerProps> = ({ initialDuration = 180 }) => {
 
     return () => {
       unregisterEventHandler('timerStarted', handleTimerStarted);
+    };
+  }, [registerEventHandler, unregisterEventHandler]);
+
+  // Réinitialiser le timer lorsqu'il reçoit l'événement 'resetGame'
+  useEffect(() => {
+    const handleResetGame = () => {
+      console.log('Resetting timer to 3 minutes');
+      setDuration(180); // Réinitialise la durée à 180 secondes
+      setTimeLeft(180); // Réinitialise le temps restant à 180 secondes
+      setIsRunning(false); // Ne redémarre pas le timer, il attend le startTimestamp
+    };
+
+    // Enregistre l'événement 'resetGame'
+    registerEventHandler('resetGame', handleResetGame);
+
+    return () => {
+      unregisterEventHandler('resetGame', handleResetGame);
     };
   }, [registerEventHandler, unregisterEventHandler]);
 
