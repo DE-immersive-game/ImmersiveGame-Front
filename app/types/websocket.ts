@@ -14,7 +14,9 @@ export type WebSocketEvent =
   | 'test'
   | 'loadindLight'
   | 'startGame'
-  | 'resetGame';
+  | 'resetGame'
+  | 'timerStarted'
+  | 'endGame';
 
 export type Score = {
   team_a: number;
@@ -29,6 +31,8 @@ export interface WebSocketData {
   id?: number;
   GPIO?: number;
   pressed?: boolean;
+  startTimestamp?: number;
+  duration?: number;
 }
 
 export interface WebSocketMessage {

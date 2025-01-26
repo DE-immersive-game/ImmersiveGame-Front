@@ -1,42 +1,51 @@
-'use client';
-
 import React, { useEffect, useState } from 'react';
 
 interface TimerProps {
-  onStart: boolean; // Prop pour démarrer le timer
+  startTimestamp: number; // Timestamp du début du jeu
+  duration: number; // Durée totale du timer en secondes
   onStop: boolean; // Prop pour arrêter le timer
 }
 
-const Timer: React.FC<TimerProps> = ({ onStart, onStop }) => {
-  const [timeLeft, setTimeLeft] = useState(3 * 60); // 3 minutes en secondes
-  const [isRunning, setIsRunning] = useState(false); // État pour savoir si le timer tourne
+const Timer: React.FC<TimerProps> = ({ startTimestamp, duration, onStop }) => {
+  const [timeLeft, setTimeLeft] = useState<number>(duration); // Temps restant
+  const [isRunning, setIsRunning] = useState(false);
 
   useEffect(() => {
-    if (onStart) {
-      setIsRunning(true); // Démarre le timer lorsque "onStart" passe à true
+    if (startTimestamp) {
+      const now = Date.now();
+      const elapsed = Math.floor((now - startTimestamp) / 1000); // Temps écoulé en secondes
+      const remainingTime = duration - elapsed;
+
+      if (remainingTime > 0) {
+        setTimeLeft(remainingTime); // Synchronise le temps restant
+        setIsRunning(true); // Lance le timer
+      } else {
+        setTimeLeft(0); // Le timer est terminé
+        setIsRunning(false);
+      }
     }
-  }, [onStart]);
+  }, [startTimestamp, duration]);
 
   useEffect(() => {
     if (onStop) {
-      setIsRunning(false); // Arrête le timer lorsque "onStop" passe à true
+      setIsRunning(false); // Arrête le timer si onStop est activé
     }
   }, [onStop]);
 
   useEffect(() => {
-    if (!isRunning) return; // Si le timer n'est pas démarré, ne fait rien
+    if (!isRunning) return;
 
     const timer = setInterval(() => {
       setTimeLeft((prevTime) => {
         if (prevTime <= 1) {
-          clearInterval(timer); // Arrêter le timer quand il atteint 0
+          clearInterval(timer); // Arrête le timer lorsqu'il atteint 0
           return 0;
         }
         return prevTime - 1;
       });
     }, 1000);
 
-    return () => clearInterval(timer); // Nettoyage à la fin du composant ou lorsque isRunning passe à false
+    return () => clearInterval(timer); // Nettoie le timer
   }, [isRunning]);
 
   const formatTime = (time: number) => {
@@ -46,21 +55,8 @@ const Timer: React.FC<TimerProps> = ({ onStart, onStop }) => {
   };
 
   return (
-    <div
-      id="bg-timer"
-      className="text-cyan-50 text-xl bg-[url('/backgrounds/background-timer.png')] bg-contain bg-no-repeat bg-center w-[61vw] h-[38.52vh] flex justify-center items-center"
-    >
-      <div className="flex items-center justify-center w-[50px]">
-        <p
-          className={`text-[100px] font-orbitron text-center ${
-            timeLeft <= 30
-              ? 'text-indicative-incorrect-100 bg-opacity-10 backdrop-blur-xl shadow-inner'
-              : ''
-          }`}
-        >
-          {formatTime(timeLeft)}
-        </p>
-      </div>
+    <div>
+      <p>Temps restant : {formatTime(timeLeft)}</p>
     </div>
   );
 };
