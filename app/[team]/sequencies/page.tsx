@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useWebSocket } from '@/app/context/WebSocketUsage';
 import { Team } from '@/app/types';
@@ -11,6 +11,8 @@ export default function SequenciesPage() {
   const router = useRouter();
   const params = useParams();
   const team = params.team as Team;
+
+  const [sequence, setSequence] = useState<{ id: number; pressed: boolean }[]>([]);
 
   // Validation de l'équipe (au cas où)
   if (!Object.values(Team).includes(team)) {
@@ -55,7 +57,7 @@ export default function SequenciesPage() {
 
   return (
     <div>
-      <Sequencies team={team} />
+      <Sequencies team={team} sequence={sequence} />
     </div>
   );
 }

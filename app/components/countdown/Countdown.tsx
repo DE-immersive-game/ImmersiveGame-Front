@@ -4,12 +4,14 @@ import { Team } from '@/app/types';
 import { teamsRessources } from '@/lib/teamsRessources';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 type CountdownScreenProps = {
   team: Team;
 };
 
 const CountdownScreen = ({ team }: CountdownScreenProps) => {
+  const router = useRouter();
   const currentTeamResources = teamsRessources[team];
 
   const [countdown, setCountdown] = useState(3);
@@ -20,6 +22,14 @@ const CountdownScreen = ({ team }: CountdownScreenProps) => {
     }, 1000);
     return () => clearInterval(intervalId);
   }, []);
+
+  useEffect(() => {
+    if (countdown === 0) {
+      setTimeout(() => {
+        router.push(`/${team}/sequencies`);
+      }, 1000);
+    }
+  }, [countdown]);
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center text-neutral-text">
