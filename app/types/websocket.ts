@@ -15,7 +15,9 @@ export type WebSocketEvent =
   | 'loadindLight'
   | 'startGame'
   | 'resetGame'
-  | 'teamScore';
+  | 'teamScore'
+  | 'sendSequence'
+  | 'currentScore';
 
 export type Score = {
   team_a: number;
@@ -51,6 +53,8 @@ export interface WebSocketContextType {
   setLoadingState: Dispatch<SetStateAction<string>>;
   registerEventHandler: (event: WebSocketEvent, handler: (data: any) => void) => void;
   unregisterEventHandler: (event: WebSocketEvent, handler: (data: any) => void) => void;
+  lastTeamScore: Score | null;
+  setLastTeamScore: (score: Score | null) => void;
 }
 
 export interface WebSocketState {

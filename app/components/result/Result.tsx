@@ -17,11 +17,9 @@ const Result = ({ team, resultType, score, mode = 'default' }: ResultProps) => {
   let background;
 
   if (resultType === 'lose') {
-    // Utilisez les ressources de l'équipe perdante
     currentTeamResources = teamsRessources[team as Team];
     background = currentTeamResources.loseBackground || currentTeamResources.background;
   } else if (team === 'draw') {
-    // Cas d'égalité
     currentTeamResources = {
       name: 'Match Nul',
       background: '/backgrounds/background-draw.png',

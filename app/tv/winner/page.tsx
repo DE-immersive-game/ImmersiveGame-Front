@@ -12,7 +12,6 @@ const ScorePage = () => {
   useEffect(() => {
     const handleTeamScore = (data: any) => {
       const { team_a, team_b, result } = data;
-      // Determine the winner or handle draw case
       const winner = result === 'draw' ? 'draw' : team_a > team_b ? Team.TEAM_A : Team.TEAM_B;
 
       setScore({

@@ -73,3 +73,34 @@ const WinPage = () => {
 };
 
 export default WinPage;
+
+// 'use client';
+
+// import Result from '@/app/components/result/Result';
+// import { Score, Team } from '@/app/types';
+
+// const WinPage = () => {
+//   const team: Team = Team.TEAM_A;
+
+//   const score: Score = {
+//     team_a: 2,
+//     team_b: 0,
+//     winner: Team.TEAM_A,
+//   };
+
+//   if (score.winner !== team) {
+//     return (
+//       <div className="text-center text-white text-3xl">
+//         Cette équipe n'a pas gagné ou le résultat est incorrect
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <div>
+//       <Result team={team} score={score} resultType="win" mode="tv" />
+//     </div>
+//   );
+// };
+
+// export default WinPage;

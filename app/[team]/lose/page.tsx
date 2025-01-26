@@ -73,3 +73,34 @@ const LosePage = () => {
 };
 
 export default LosePage;
+
+// 'use client';
+
+// import Result from '@/app/components/result/Result';
+// import { Score, Team } from '@/app/types';
+
+// const LosePage = () => {
+//   const team: Team = Team.TEAM_B;
+
+//   const score: Score = {
+//     team_a: 2,
+//     team_b: 0,
+//     winner: Team.TEAM_A,
+//   };
+
+//   if (score.winner === team) {
+//     return (
+//       <div className="text-center text-white text-3xl">
+//         Cette équipe n'a pas perdu ou le résultat est incorrect
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <div>
+//       <Result team={team} score={score} resultType="lose" mode="tv" />
+//     </div>
+//   );
+// };
+
+// export default LosePage;
