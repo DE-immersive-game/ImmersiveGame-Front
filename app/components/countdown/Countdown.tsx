@@ -4,32 +4,31 @@ import { Team } from '@/app/types';
 import { teamsRessources } from '@/lib/teamsRessources';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 
 type CountdownScreenProps = {
   team: Team;
+  onComplete: () => void; // Callback à appeler une fois le compte à rebours terminé
 };
 
-const CountdownScreen = ({ team }: CountdownScreenProps) => {
-  const router = useRouter();
+const CountdownScreen = ({ team, onComplete }: CountdownScreenProps) => {
   const currentTeamResources = teamsRessources[team];
-
   const [countdown, setCountdown] = useState(3);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCountdown((prevCountdown) => (prevCountdown > 0 ? prevCountdown - 1 : 0));
     }, 1000);
+
     return () => clearInterval(intervalId);
   }, []);
 
   useEffect(() => {
     if (countdown === 0) {
       setTimeout(() => {
-        router.push(`/${team}/sequencies`);
+        onComplete(); // Appelle la fonction parent lorsque le compte à rebours est terminé
       }, 1000);
     }
-  }, [countdown]);
+  }, [countdown, onComplete]);
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center text-neutral-text">
