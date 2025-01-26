@@ -3,6 +3,7 @@
 import { Team } from '@/app/types';
 import { teamsRessources } from '@/lib/teamsRessources';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 type CountdownScreenProps = {
   team: Team;
@@ -10,6 +11,15 @@ type CountdownScreenProps = {
 
 const CountdownScreen = ({ team }: CountdownScreenProps) => {
   const currentTeamResources = teamsRessources[team];
+
+  const [countdown, setCountdown] = useState(3);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCountdown((prevCountdown) => (prevCountdown > 0 ? prevCountdown - 1 : 0));
+    }, 1000);
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center text-neutral-text">
@@ -29,8 +39,13 @@ const CountdownScreen = ({ team }: CountdownScreenProps) => {
         />
       </div>
       <div className="w-full flex justify-center text-center">
-        <div className="w-80 h-80 bg-neutral-text bg-opacity-10 border-2 border-white/40 shadow-inner backdrop-blur-2xl flex items-center justify-center">
-          <h1 className="text-5xl font-bold text-neutral-text">Countdown</h1>
+        <div className="w-80 h-80 flex items-center justify-center rounded-[32px] bg-black/40 backdrop-blur-[10px] border-t-2 border-l border-white/50 glassmorphism-shadow ">
+          <h1
+            key={countdown}
+            className="text-9xl font-bold text-neutral-text font-orbitron opacity-0 animate-fadeAndScale"
+          >
+            {countdown > 0 ? countdown : 'GO'}
+          </h1>
         </div>
       </div>
     </div>
