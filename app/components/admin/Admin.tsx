@@ -14,7 +14,7 @@ const Admin = () => {
   return (
     <div className="relative">
       <div
-        className="absolute inset-0 z-0 animate-customPulse bg-center bg-cover"
+        className="absolute inset-0 z-0 animate-background-pulse bg-center bg-cover"
         style={{
           backgroundImage: 'url(/backgrounds/background-bicolore.png)',
         }}
@@ -26,7 +26,7 @@ const Admin = () => {
             <div className="mt-6">
               <div className="flex flex-col gap-4">
                 <button onClick={() => handleSendEvent('startGame')} disabled={!isConnected}>
-                  <div className="border-white border-2 rounded-3xl w-[455px] h-24 px-4 py-2 text-white text-xl font-semibold font-orbitron flex justify-center items-center gap-5 p-5">
+                  <div className="relative border-2 rounded-3xl w-[450px] h-24 text-white text-xl tracking-[5px] font-semibold font-orbitron flex items-center gap-5 p-8 bg-black/40 backdrop-blur-[10px] border-t-2 border-l border-white/50 glassmorphism-shadow after:content-[''] after:absolute after:inset-0 after:bg-natural-1 after:rounded-full after:blur-lg after:w-[200px] after:h-[10px] after:top-full after:left-1/2 after:transform after:-translate-x-1/2 after:-translate-y-1/2 overflow-hidden">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="50"
@@ -86,7 +86,7 @@ const Admin = () => {
                   </div>
                 </button>
                 <button>
-                  <div className="border-white border-2 rounded-3xl w-[455px] h-24 px-4 py-2 text-white text-xl font-semibold font-orbitron flex justify-center items-center gap-5 p-5">
+                  <div className="relative border-2 rounded-3xl w-[450px] h-24 text-white text-xl tracking-[5px] font-semibold font-orbitron flex items-center gap-5 p-8 bg-black/40 backdrop-blur-[10px] border-t-2 border-l border-white/50 glassmorphism-shadow after:content-[''] after:absolute after:inset-0 after:bg-[#2693FF] after:rounded-full after:blur-lg after:w-[200px] after:h-[10px] after:top-full after:left-1/2 after:transform after:-translate-x-1/2 after:-translate-y-1/2 overflow-hidden">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="50"
@@ -154,7 +154,7 @@ const Admin = () => {
                   </div>
                 </button>
                 <button onClick={() => handleSendEvent('resetGame')} disabled={!isConnected}>
-                  <div className="border-white border-2 rounded-3xl w-[455px] h-24 px-4 py-2 text-white text-xl font-semibold font-orbitron flex justify-center items-center gap-5 p-5">
+                  <div className="relative border-2 rounded-3xl w-[450px] h-24 text-white text-xl tracking-[5px] font-semibold font-orbitron flex  items-center gap-5 p-8 bg-black/40 backdrop-blur-[10px] border-t-2 border-l border-white/50 glassmorphism-shadow after:content-[''] after:absolute after:inset-0 after:bg-futuristic-1 after:rounded-full after:blur-lg after:w-[200px] after:h-[10px] after:top-full after:left-1/2 after:transform after:-translate-x-1/2 after:-translate-y-1/2 overflow-hidden">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="50"
@@ -210,7 +210,7 @@ const Admin = () => {
                         </filter>
                       </defs>
                     </svg>
-                    Réinitialiser la partie
+                    Réinitialiser le jeu
                   </div>
                 </button>
               </div>

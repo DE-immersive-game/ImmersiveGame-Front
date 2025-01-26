@@ -34,6 +34,7 @@
     box-shadow: -4px -4px 20px 4px rgba(229, 72, 72, 0.5) inset,
       3px 3px 15px 4px rgba(229, 72, 72, 0.5) inset;
   }
+
   .sequencies-error {
     background: linear-gradient(
       180deg,
