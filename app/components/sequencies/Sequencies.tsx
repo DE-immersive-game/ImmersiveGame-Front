@@ -62,8 +62,8 @@ const Sequencies = ({ team, sequence: initialSequence, counter }: SequenciesProp
         })`,
       }}
     >
-      <div className="w-full min-h-screen flex flex-col gap-4 items-center justify-between px-4 pb-4">
-        <div>
+      <div className="w-full min-h-screen flex flex-col gap-4 items-center justify-between px-4 pb-14">
+        <div className="h-[15vh] overflow-hidden flex items-end ">
           <Timer countDown={counter} />
         </div>
         <div className="w-full flex gap-3 justify-center items-center flex-wrap">
