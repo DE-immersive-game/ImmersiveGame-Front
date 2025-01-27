@@ -19,16 +19,21 @@ const Sequencies = ({ team, sequence: initialSequence, counter }: SequenciesProp
 
   useEffect(() => {
     setSequence(initialSequence);
+
+    // Détecter si une erreur existe dans la séquence
+    const hasError = initialSequence.some((item) => item.error);
+    setError(hasError);
   }, [initialSequence]);
 
   return (
     <div
       className="relative z-10 min-h-screen bg-no-repeat bg-center bg-cover"
       style={{
-        backgroundImage: `url(${currentTeamResources.background})`,
+        backgroundImage: `url(${
+          error ? currentTeamResources.loseBackground : currentTeamResources.background
+        })`,
       }}
     >
-      {error && <div className="sequencies-error w-full min-h-screen absolute top-0 left-0"></div>}
       <div className="w-full min-h-screen flex flex-col gap-4 items-center justify-between px-4 pb-4">
         <div>
           <Timer countDown={counter} />
