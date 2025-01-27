@@ -50,13 +50,9 @@ const Timer = ({ countDown }: TimerProps) => {
   return (
     <div
       id="bg-timer"
-      className="text-cyan-50 text-xl bg-[url('/backgrounds/background-timer.png')] bg-contain bg-no-repeat bg-center w-[61vw] h-[38.52vh] flex justify-center items-center"
+      className="text-cyan-50 bg-[url('/backgrounds/background-timer.png')] bg-contain bg-no-repeat bg-center w-[31vw] h-[19vh] flex justify-center items-center"
     >
-      <p
-        className={`text-[100px] font-orbitron ${
-          counter <= 30 ? 'text-indicative-incorrect-0' : ''
-        }`}
-      >
+      <p className={`text-7xl font-orbitron ${counter <= 30 ? 'text-indicative-incorrect-0' : ''}`}>
         {formatTime(counter)}
       </p>
     </div>
