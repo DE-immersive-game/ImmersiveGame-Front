@@ -45,7 +45,7 @@ const Number = ({
         'relative flex items-center justify-center gap-3 rounded-[32px] bg-black/40 backdrop-blur-[10px] border-t-2 border-l border-white/50 glassmorphism-shadow',
         sizes.button[size],
         success && 'bg-[#48e5e5]/50 border-white/80 glassmorphism-shadow-clicked',
-        success && pressed && 'animate-button-pulse',
+        success && pressed && !error && 'animate-button-pulse',
         error && 'bg-[#e54848]/50 border-white/80 glassmorphism-shadow-error',
         className,
       )}
