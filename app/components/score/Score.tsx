@@ -1,9 +1,30 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import LoaderBar from '../loaderbar/LoaderBar';
 import Timer from '../timer/Timer';
+import { useWebSocket } from '@/app/context/WebSocketUsage';
 
 const Score = () => {
-  const scoreA = 11;
-  const scoreB = 8;
+  const [scoreA, setScoreA] = useState(0);
+  const [scoreB, setScoreB] = useState(0);
+  const { registerEventHandler, unregisterEventHandler } = useWebSocket();
+
+  useEffect(() => {
+    const handleCurrentScore = (data) => {
+      if (data.team === 'team_a') {
+        setScoreA(data.score);
+      } else if (data.team === 'team_b') {
+        setScoreB(data.score);
+      }
+    };
+
+    registerEventHandler('currentScore', handleCurrentScore);
+
+    return () => {
+      unregisterEventHandler('currentScore', handleCurrentScore);
+    };
+  }, [registerEventHandler, unregisterEventHandler]);
 
   return (
     <div className="relative">
@@ -18,7 +39,7 @@ const Score = () => {
           <Timer />
           <div className="flex gap-[6vw] justify-center items-center">
             <div
-              className="w-[20vw] h-[52vh] px-[4vw] py-[3vh] flex flex-col gap-[4vw] rounded-[0.6vw] border-[0.2vw] backdrop-blur-[2vw] "
+              className="w-[20vw] h-[52vh] px-[4vw] py-[3vh] flex flex-col gap-[4vw] rounded-[0.6vw] border-[0.2vw] backdrop-blur-[2vw]"
               style={{
                 borderColor: 'rgba(255, 255, 255, 0.50)',
                 backgroundColor: 'rgba(255,255,255,0.05)',
@@ -28,7 +49,7 @@ const Score = () => {
             >
               <div className="bg-[url(/logos/Edenys.png)] bg-contain bg-no-repeat bg-center w-[13vw] h-[28vh]"></div>
 
-              <div className=" bg-[url(/edenys-score.png)] bg-contain bg-no-repeat bg-center w-[12vw] h-[14vh] px-[2vw] py-[1vh] flex justify-center items-center font-orbitron text-white text-[4vw] font-semibold">
+              <div className="bg-[url(/edenys-score.png)] bg-contain bg-no-repeat bg-center w-[12vw] h-[14vh] px-[2vw] py-[1vh] flex justify-center items-center font-orbitron text-white text-[4vw] font-semibold">
                 {scoreA}
               </div>
             </div>
@@ -39,7 +60,7 @@ const Score = () => {
               VS
             </h1>
             <div
-              className="w-[20vw] h-[52vh] px-[4vw] py-[3vh] flex flex-col gap-[4vw] rounded-[0.6vw] border-[0.2vw] backdrop-blur-[2vw] "
+              className="w-[20vw] h-[52vh] px-[4vw] py-[3vh] flex flex-col gap-[4vw] rounded-[0.6vw] border-[0.2vw] backdrop-blur-[2vw]"
               style={{
                 borderColor: 'rgba(255, 255, 255, 0.50)',
                 backgroundColor: 'rgba(255,255,255,0.05)',
@@ -49,7 +70,7 @@ const Score = () => {
             >
               <div className="bg-[url(/logos/Nexora.png)] bg-contain bg-no-repeat bg-center w-[13vw] h-[28vh]"></div>
 
-              <div className="bg-[url(/nexora-score.png)] bg-contain bg-no-repeat bg-center w-[12vw] h-[14vh] px-[2vw] py-[1vh] flex justify-center items-center font-orbitron text-white text-[4vw] font-semibold ">
+              <div className="bg-[url(/nexora-score.png)] bg-contain bg-no-repeat bg-center w-[12vw] h-[14vh] px-[2vw] py-[1vh] flex justify-center items-center font-orbitron text-white text-[4vw] font-semibold">
                 {scoreB}
               </div>
             </div>

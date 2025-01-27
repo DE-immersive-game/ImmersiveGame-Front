@@ -12,7 +12,7 @@ import {
   Team,
 } from '../types';
 
-const WEBSOCKET_URL = 'ws://localhost:8000/admin';
+const WEBSOCKET_URL = 'ws://10.14.24.2:8000/admin';
 
 const WebSocketContext = createContext<WebSocketContextType | undefined>(undefined);
 
@@ -47,17 +47,6 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
     },
     [],
   );
-
-  // const handleTeamScore = (data: { team_a: number; team_b: number; result: Team | 'draw' }) => {
-  //   const score = {
-  //     team_a: data.team_a,
-  //     team_b: data.team_b,
-  //     winner: data.result,
-  //   };
-
-  //   setLastTeamScore(score);
-  //   // existing event handling logic
-  // };
 
   useEffect(() => {
     const ws = new WebSocket(WEBSOCKET_URL);
