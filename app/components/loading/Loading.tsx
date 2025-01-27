@@ -16,13 +16,12 @@ const LoadingScreen = ({ team, state }: LoadingScreenProps) => {
     return <div>Équipe invalide ou non trouvée</div>;
   }
 
-  // Détermine le texte ou contenu basé sur l'état
   const getContent = () => {
     switch (state) {
       case 'waiting':
         return 'En attente de joueurs';
       case 'starting':
-        return 'La partie va commencer...'; // Texte pour "starting"
+        return 'La partie va commencer...';
       default:
         return 'Chargement...';
     }
