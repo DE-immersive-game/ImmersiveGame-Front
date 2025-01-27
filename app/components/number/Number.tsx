@@ -46,7 +46,7 @@ const Number = ({
         sizes.button[size],
         success && 'bg-[#48e5e5]/50 border-white/80 glassmorphism-shadow-clicked',
         success && pressed && !error && 'animate-button-pulse',
-        error && 'bg-[#e54848]/50 border-white/80 glassmorphism-shadow-error',
+        error && 'bg-[#e54848]/50 border-white/80 glassmorphism-shadow-error animate-button-shake',
         className,
       )}
     >

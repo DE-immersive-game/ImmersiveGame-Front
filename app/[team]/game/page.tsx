@@ -5,8 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { useWebSocket } from '@/app/context/WebSocketUsage';
 import CountdownScreen from '@/app/components/countdown/Countdown';
 import Sequencies from '@/app/components/sequencies/Sequencies';
-import ValidateSequence from '@/app/components/validateSequence/ValidateSequence'; // Import du composant
-import { Team, TimerType } from '@/app/types';
+import { Score, Team, TimerType } from '@/app/types';
 
 const Game = () => {
   const { registerEventHandler, unregisterEventHandler } = useWebSocket();
@@ -19,17 +18,13 @@ const Game = () => {
     { id: number; pressed: boolean; success?: boolean; error?: boolean }[]
   >([]);
   const [showCountdown, setShowCountdown] = useState(true);
-  const [showValidateSequence, setShowValidateSequence] = useState(false);
-
-  // Scores des équipes
-  const [scoreA, setScoreA] = useState(0);
-  const [scoreB, setScoreB] = useState(0);
-
-  const score = {
-    team_a: scoreA,
-    team_b: scoreB,
-    winner: scoreA > scoreB ? Team.TEAM_A : scoreB > scoreA ? Team.TEAM_B : null,
-  };
+  const [sequenceSuccess, setSequenceSuccess] = useState(false);
+  const [sequenceError, setSequenceError] = useState(false);
+  const [score, setScore] = useState<Score>({
+    team_a: 0,
+    team_b: 0,
+    winner: 'draw',
+  });
 
   if (![Team.TEAM_A, Team.TEAM_B].includes(team)) {
     return <div className="text-center text-white text-3xl">Équipe invalide ou non trouvée</div>;
@@ -47,17 +42,20 @@ const Game = () => {
       );
 
       // Affiche `ValidateSequence` pendant 1 seconde
-      setShowValidateSequence(true);
-      setTimeout(() => setShowValidateSequence(false), 1000);
+      setSequenceSuccess(true);
+      setTimeout(() => setSequenceSuccess(false), 1000);
     }
   };
 
   const getCurrentScore = (data: { team: Team; score: number }) => {
-    if (data.team === 'team_a') {
-      setScoreA(data.score);
-    } else if (data.team === 'team_b') {
-      setScoreB(data.score);
-    }
+    const scoreA = data.team === 'team_a' ? data.score : score.team_a;
+    const scoreB = data.team === 'team_b' ? data.score : score.team_b;
+
+    setScore({
+      team_a: scoreA,
+      team_b: scoreB,
+      winner: scoreA > scoreB ? Team.TEAM_A : scoreB > scoreA ? Team.TEAM_B : 'draw',
+    });
   };
 
   const handleTimerStarted = (message: TimerType) => {
@@ -82,6 +80,7 @@ const Game = () => {
       );
     }
     if (buttonInfo.team === team && status === 'error') {
+      setSequenceError(true);
       setSequence((prevSequence) =>
         prevSequence.map((button, index) => ({
           ...button,
@@ -98,7 +97,8 @@ const Game = () => {
             error: false,
           })),
         );
-      }, 1000);
+        setSequenceError(false);
+      }, 1500);
     }
   };
 
@@ -141,10 +141,15 @@ const Game = () => {
           counter={counter}
           duration={duration}
         />
-      ) : showValidateSequence ? (
-        <ValidateSequence team={team} counter={counter} score={score} />
       ) : (
-        <Sequencies team={team} sequence={sequence} counter={counter} />
+        <Sequencies
+          team={team}
+          sequence={sequence}
+          counter={counter}
+          sequenceError={sequenceError}
+          sequenceSuccess={sequenceSuccess}
+          score={score}
+        />
       )}
     </main>
   );

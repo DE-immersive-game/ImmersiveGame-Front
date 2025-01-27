@@ -97,6 +97,14 @@ const config = {
           '0%': { opacity: '0', transform: 'scale(0.8)' },
           '100%': { opacity: '1', transform: 'scale(1)' },
         },
+        'button-shake': {
+          '5%, 15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%, 95%': {
+            transform: 'translate3d(-8px, 0, 0)',
+          },
+          '0%, 10%, 20%, 30%, 40%, 50%, 60%, 70%, 80%, 90%, 100%': {
+            transform: 'translate3d(8px, 0, 0)',
+          },
+        },
       },
       animation: {
         'green-slide': 'slide-right 1.5s linear infinite',
@@ -105,6 +113,7 @@ const config = {
         'button-pulse': 'button-pulse 1.5s infinite',
         fadeInUp: 'fadeInUp 1s ease forwards',
         fadeAndScale: 'fadeAndScale 1s ease-in-out',
+        'button-shake': 'button-shake 0.9s cubic-bezier(.36,.07,.19,.97)',
       },
       boxShadow: {
         'custom-text': '0px 0px 44px 0px rgba(255, 255, 255, 0.75)',

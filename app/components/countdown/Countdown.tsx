@@ -1,7 +1,6 @@
 'use client';
 
-import { useWebSocket } from '@/app/context/WebSocketUsage';
-import { Team, TimerType } from '@/app/types';
+import { Team } from '@/app/types';
 import { teamsRessources } from '@/lib/teamsRessources';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
@@ -15,7 +14,6 @@ type CountdownScreenProps = {
 
 const CountdownScreen = ({ team, counter, duration, onComplete }: CountdownScreenProps) => {
   const [countDown, setCountDown] = useState<number | null>(null);
-  const { registerEventHandler, unregisterEventHandler } = useWebSocket();
   const currentTeamResources = teamsRessources[team];
 
   // Démarrer le timer lorsque l'événement `timerStarted` est reçu
@@ -29,11 +27,7 @@ const CountdownScreen = ({ team, counter, duration, onComplete }: CountdownScree
         onComplete();
       }
     }
-  }, [counter]);
-
-  if (countDown === null) {
-    return null;
-  }
+  }, [counter, duration, onComplete]);
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center text-neutral-text">
@@ -53,14 +47,16 @@ const CountdownScreen = ({ team, counter, duration, onComplete }: CountdownScree
         />
       </div>
       <div className="w-full flex justify-center text-center">
-        <div className="w-80 h-80 flex items-center justify-center rounded-[32px] bg-black/40 backdrop-blur-[10px] border-t-2 border-l border-white/50 glassmorphism-shadow ">
-          <h1
-            key={countDown}
-            className="text-9xl font-bold text-neutral-text font-orbitron opacity-0 animate-fadeAndScale"
-          >
-            {countDown > 0 ? countDown : 'GO'}
-          </h1>
-        </div>
+        {countDown != null && (
+          <div className="w-80 h-80 flex items-center justify-center rounded-[32px] bg-black/40 backdrop-blur-[10px] border-t-2 border-l border-white/50 glassmorphism-shadow ">
+            <h1
+              key={countDown}
+              className="text-9xl font-bold text-neutral-text font-orbitron opacity-0 animate-fadeAndScale"
+            >
+              {countDown > 0 ? countDown : 'GO'}
+            </h1>
+          </div>
+        )}
       </div>
     </div>
   );
