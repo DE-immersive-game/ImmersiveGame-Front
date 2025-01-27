@@ -2,7 +2,8 @@
 
 import React from 'react';
 import { useWebSocket } from '@/app/context/WebSocketUsage';
-import { WebSocketMessage, WebSocketEvent } from '@/app/types';
+import { WebSocketMessage, WebSocketEvent, Team } from '@/app/types';
+import { send } from 'process';
 
 const Admin = () => {
   const { isConnected, receivedMessages, sentMessages, sendMessage } = useWebSocket();
@@ -11,6 +12,15 @@ const Admin = () => {
     const message: WebSocketMessage = { event, data };
     sendMessage(message);
   };
+
+  const handleResetSequence = (team: Team) => {
+    const message: WebSocketMessage = {
+      event: 'resetSequence',
+      data: { team },
+    };
+    sendMessage(message);
+  };
+
   return (
     <div className="relative">
       <div
@@ -85,13 +95,13 @@ const Admin = () => {
                     Lancer la partie
                   </div>
                 </button>
-                <button>
+                <button onClick={() => handleResetSequence(Team.TEAM_A)} disabled={!isConnected}>
                   <div className="relative border-2 rounded-3xl w-[450px] h-24 text-white text-xl tracking-[5px] font-semibold font-orbitron flex items-center gap-5 p-8 bg-black/40 backdrop-blur-[10px] border-t-2 border-l border-white/50 glassmorphism-shadow after:content-[''] after:absolute after:inset-0 after:bg-natural-1 after:rounded-full after:blur-lg after:w-[200px] after:h-[10px] after:top-full after:left-1/2 after:transform after:-translate-x-1/2 after:-translate-y-1/2 overflow-hidden">
                     <div className="bg-[url(/logos/Edenys.png)] bg-contain bg-no-repeat bg-center w-[60px] h-[60px]"></div>
                     Relancer la série
                   </div>
                 </button>
-                <button>
+                <button onClick={() => handleResetSequence(Team.TEAM_B)} disabled={!isConnected}>
                   <div className="relative border-2 rounded-3xl w-[450px] h-24 text-white text-xl tracking-[5px] font-semibold font-orbitron flex items-center gap-5 p-8 bg-black/40 backdrop-blur-[10px] border-t-2 border-l border-white/50 glassmorphism-shadow after:content-[''] after:absolute after:inset-0 after:bg-futuristic-1 after:rounded-full after:blur-lg after:w-[200px] after:h-[10px] after:top-full after:left-1/2 after:transform after:-translate-x-1/2 after:-translate-y-1/2 overflow-hidden">
                     <div className="bg-[url(/logos/Nexora.png)] bg-contain bg-no-repeat bg-center w-[60px] h-[60px]"></div>
                     Relancer la série
