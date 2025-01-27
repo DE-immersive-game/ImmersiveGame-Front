@@ -13,23 +13,10 @@ const Admin = () => {
     sendMessage(message);
   };
 
-  // const handleResetSequence = (event: WebSocketEvent, data: Record<string, any> = {}) => {
-  //   const message: WebSocketMessage = { event, data };
-  //   sendMessage(message);
-  // };
-
-  // const handleResetSequence = (team: Team) => {
-  //   const message: WebSocketMessage = {
-  //     event: 'resetSequence',
-  //     data: { team },
-  //   };
-  //   sendMessage(message);
-  // };
-
   const handleResetSequence = (team: Team) => {
     const message: WebSocketMessage = {
       event: 'resetSequence',
-      data: team,
+      data: { team },
     };
     sendMessage(message);
   };
