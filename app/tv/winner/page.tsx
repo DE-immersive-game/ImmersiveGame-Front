@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Result from '@/app/components/result/Result';
 import { Score, Team, ScoreResult } from '@/app/types';
 import { useWebSocket } from '@/app/context/WebSocketUsage';
+import ResetGameHandler from '@/app/components/resetGameHandler/ResetGameHandler';
 
 const WinnerPage = () => {
   const [score, setScore] = useState<Score | null>(null);
@@ -53,7 +54,12 @@ const WinnerPage = () => {
   const resultType: ScoreResult | 'draw' =
     score.winner === 'draw' ? 'draw' : score.winner === Team.TEAM_A ? 'win' : 'lose';
 
-  return <Result team={score.winner} score={score} resultType={resultType} mode="tv" />;
+  return (
+    <div>
+      <Result team={score.winner} score={score} resultType={resultType} mode="tv" />
+      <ResetGameHandler />;
+    </div>
+  );
 };
 
 export default WinnerPage;

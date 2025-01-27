@@ -12,7 +12,7 @@ import {
   Team,
 } from '../types';
 
-const WEBSOCKET_URL = 'ws://10.14.24.2:8000/admin';
+const WEBSOCKET_URL = 'ws://localhost:8000/admin';
 
 const WebSocketContext = createContext<WebSocketContextType | undefined>(undefined);
 

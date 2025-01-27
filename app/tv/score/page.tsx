@@ -1,5 +1,6 @@
 'use client';
 
+import ResetGameHandler from '@/app/components/resetGameHandler/ResetGameHandler';
 import Score from '@/app/components/score/Score';
 import { useWebSocket } from '@/app/context/WebSocketUsage';
 import { useRouter } from 'next/navigation';
@@ -20,5 +21,10 @@ export default function ScorePage() {
     };
   }, [registerEventHandler, unregisterEventHandler, router]);
 
-  return <Score />;
+  return (
+    <div>
+      <Score />
+      <ResetGameHandler />
+    </div>
+  );
 }
