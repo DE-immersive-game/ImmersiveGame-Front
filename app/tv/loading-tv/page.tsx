@@ -20,7 +20,7 @@ const LoadingPage = () => {
       console.log('Start game event received');
       setLoadingState('starting');
       const timeoutId = setTimeout(() => {
-        router.push(`/tv/game`);
+        router.push(`/tv/score`);
       }, 1000);
 
       return () => clearTimeout(timeoutId); // Nettoie le timeout
