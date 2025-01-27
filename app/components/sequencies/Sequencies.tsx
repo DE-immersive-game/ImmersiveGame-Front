@@ -5,6 +5,8 @@ import { Team } from '@/app/types';
 import { teamsRessources } from '@/lib/teamsRessources';
 import Number from '@/app/components/number/Number';
 import Timer from '@/app/components/timer/Timer';
+import LittleScore from '@/app/components/littleScore/LittleScore';
+import { useWebSocket } from '@/app/context/WebSocketUsage';
 
 type SequenciesProps = {
   team: Team;
@@ -15,20 +17,51 @@ type SequenciesProps = {
 const Sequencies = ({ team, sequence: initialSequence, counter }: SequenciesProps) => {
   const [sequence, setSequence] = useState(initialSequence);
   const [error, setError] = useState(false);
+  const [scoreA, setScoreA] = useState(0);
+  const [scoreB, setScoreB] = useState(0);
+
+  const { registerEventHandler, unregisterEventHandler } = useWebSocket();
   const currentTeamResources = teamsRessources[team];
 
   useEffect(() => {
     setSequence(initialSequence);
+
+    // Détecter si une erreur existe dans la séquence
+    const hasError = initialSequence.some((item) => item.error);
+    setError(hasError);
   }, [initialSequence]);
+
+  useEffect(() => {
+    const handleCurrentScore = (data) => {
+      if (data.team === 'team_a') {
+        setScoreA(data.score);
+      } else if (data.team === 'team_b') {
+        setScoreB(data.score);
+      }
+    };
+
+    registerEventHandler('currentScore', handleCurrentScore);
+
+    return () => {
+      unregisterEventHandler('currentScore', handleCurrentScore);
+    };
+  }, [registerEventHandler, unregisterEventHandler]);
+
+  const score = {
+    team_a: scoreA,
+    team_b: scoreB,
+    winner: scoreA > scoreB ? Team.TEAM_A : scoreB > scoreA ? Team.TEAM_B : null,
+  };
 
   return (
     <div
       className="relative z-10 min-h-screen bg-no-repeat bg-center bg-cover"
       style={{
-        backgroundImage: `url(${currentTeamResources.background})`,
+        backgroundImage: `url(${
+          error ? currentTeamResources.loseBackground : currentTeamResources.background
+        })`,
       }}
     >
-      {error && <div className="sequencies-error w-full min-h-screen absolute top-0 left-0"></div>}
       <div className="w-full min-h-screen flex flex-col gap-4 items-center justify-between px-4 pb-4">
         <div>
           <Timer countDown={counter} />
@@ -52,7 +85,13 @@ const Sequencies = ({ team, sequence: initialSequence, counter }: SequenciesProp
             </div>
           )}
         </div>
-        <div> </div>
+        <div>
+          <LittleScore
+            team={team}
+            score={score}
+            resultType={error ? 'lose' : score.winner === team ? 'win' : 'draw'}
+          />
+        </div>
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ type ResultProps = {
   mode?: 'default' | 'tv';
 };
 
-const LittleScore = ({ team, resultType, score, mode = 'default' }: ResultProps) => {
+const LittleScore = ({ team, resultType, score }: ResultProps) => {
   const isActiveTeamA = resultType === 'lose' ? team === Team.TEAM_A : score.winner === Team.TEAM_A;
   const isActiveTeamB = resultType === 'lose' ? team === Team.TEAM_B : score.winner === Team.TEAM_B;
   return (
