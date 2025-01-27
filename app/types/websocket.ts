@@ -18,7 +18,9 @@ export type WebSocketEvent =
   | 'teamScore'
   | 'sendSequence'
   | 'currentScore'
-  | 'timer';
+  | 'timer'
+  | 'resetSequence'
+  | 'teamStatus';
 
 export type Score = {
   team_a: number;
@@ -27,6 +29,8 @@ export type Score = {
 };
 
 export type ScoreResult = 'win' | 'lose';
+
+export type TimerType = { counter?: number; duration?: number };
 
 export interface WebSocketData {
   team?: Team;

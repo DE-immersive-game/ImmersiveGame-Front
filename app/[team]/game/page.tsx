@@ -3,49 +3,81 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useWebSocket } from '@/app/context/WebSocketUsage';
-import { Team } from '@/app/types';
+import CountdownScreen from '@/app/components/countdown/Countdown';
 import Sequencies from '@/app/components/sequencies/Sequencies';
+import { Team, TimerType } from '@/app/types';
 
-export default function SequenciesPage() {
+const Game = () => {
   const { registerEventHandler, unregisterEventHandler } = useWebSocket();
   const router = useRouter();
   const params = useParams();
-  const team = params.team as Team;
+  const team = (typeof params.team === 'string' ? params.team : '') as Team;
+  const [counter, setCounter] = useState<number | null>(null);
+  const [duration, setDuration] = useState<number | null>(null);
 
-  const [sequence, setSequence] = useState<{ id: number; pressed: boolean }[]>([]);
+  // Démarrer le timer lorsque l'événement `timerStarted` est reçu
+  useEffect(() => {
+    const handleTimerStarted = (message: TimerType) => {
+      if (message?.counter !== undefined && message?.duration !== undefined) {
+        setCounter(message.counter);
+        setDuration(message.duration);
+        console.log('Counter reçu :', message.counter);
+      } else {
+        console.error('Données manquantes ou mal formatées dans le message :', message);
+      }
+    };
 
-  if (!Object.values(Team).includes(team)) {
-    return <div className="text-center text-white text-3xl">Équipe invalide !</div>;
+    // Enregistre les écouteurs pour les événements WebSocket
+    registerEventHandler('timer', handleTimerStarted);
+
+    return () => {
+      unregisterEventHandler('timer', handleTimerStarted);
+    };
+  }, [registerEventHandler, unregisterEventHandler]);
+
+  const [sequence, setSequence] = useState<
+    { id: number; pressed: boolean; success?: boolean; error?: boolean }[]
+  >([]);
+  const [showCountdown, setShowCountdown] = useState(true);
+
+  if (![Team.TEAM_A, Team.TEAM_B].includes(team)) {
+    return <div className="text-center text-white text-3xl">Équipe invalide ou non trouvée</div>;
   }
 
+  // Gestion des événements WebSocket
   const getSequence = (data: { team: Team; sequence: { id: number; pressed: boolean }[] }) => {
     if (data.team === team) {
-      setSequence(data.sequence);
+      setSequence(
+        data.sequence.map((item) => ({
+          ...item,
+          success: false,
+          error: false,
+        })),
+      );
     }
   };
 
   const getCurrentScore = (data: { team: Team; score: number }) => {
-    console.log(data);
+    console.log('Score actuel :', data);
   };
 
   const handleTeamStatus = (data: { buttonInfo: any; status: string }) => {
     const { buttonInfo, status } = data;
 
-    console.log(data);
-
     if (buttonInfo.team === team && status === 'success') {
       setSequence((prevSequence) =>
         prevSequence.map((button, index) => ({
           ...button,
-          success: index + 1 <= buttonInfo.length ? true : false,
+          success: index + 1 <= buttonInfo.length,
         })),
       );
-    } else {
+    }
+    if (buttonInfo.team === team && status === 'error') {
       setSequence((prevSequence) =>
         prevSequence.map((button, index) => ({
           ...button,
           success: false,
-          error: index + 1 <= buttonInfo.length ? true : false,
+          error: index + 1 <= buttonInfo.length,
         })),
       );
 
@@ -75,12 +107,14 @@ export default function SequenciesPage() {
   };
 
   useEffect(() => {
+    // Enregistrer les gestionnaires d'événements WebSocket
     registerEventHandler('sendSequence', getSequence);
     registerEventHandler('teamScore', handleTeamScore);
     registerEventHandler('currentScore', getCurrentScore);
     registerEventHandler('teamStatus', handleTeamStatus);
 
     return () => {
+      // Nettoyer les gestionnaires d'événements WebSocket
       unregisterEventHandler('sendSequence', getSequence);
       unregisterEventHandler('teamScore', handleTeamScore);
       unregisterEventHandler('currentScore', getCurrentScore);
@@ -89,8 +123,19 @@ export default function SequenciesPage() {
   }, [registerEventHandler, unregisterEventHandler, router, team]);
 
   return (
-    <div>
-      <Sequencies team={team} sequence={sequence} />
-    </div>
+    <main>
+      {showCountdown ? (
+        <CountdownScreen
+          team={team}
+          onComplete={() => setShowCountdown(false)}
+          counter={counter}
+          duration={duration}
+        />
+      ) : (
+        <Sequencies team={team} sequence={sequence} counter={counter} />
+      )}
+    </main>
   );
-}
+};
+
+export default Game;

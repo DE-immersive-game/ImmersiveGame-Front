@@ -6,7 +6,7 @@ import { useWebSocket } from '@/app/context/WebSocketUsage';
 import { Team } from '@/app/types';
 
 interface ResetGameHandlerProps {
-  team: Team;
+  team?: Team; // Rendre 'team' optionnel
 }
 
 const ResetGameHandler: React.FC<ResetGameHandlerProps> = ({ team }) => {
@@ -15,8 +15,12 @@ const ResetGameHandler: React.FC<ResetGameHandlerProps> = ({ team }) => {
 
   useEffect(() => {
     const handleResetGame = () => {
-      console.log(`Reset game event received for team: ${team}`);
-      router.push(`/${team}/loading`);
+      console.log(`Reset game event received${team ? ` for team: ${team}` : ''}`);
+      if (team) {
+        router.push(`/${team}/loading`);
+      } else {
+        router.push('loading');
+      }
     };
 
     registerEventHandler('resetGame', handleResetGame);
