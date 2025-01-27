@@ -1,31 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import LoaderBar from '../loaderbar/LoaderBar';
 import Timer from '../timer/Timer';
-import { useWebSocket } from '@/app/context/WebSocketUsage';
+import { CurrentScore } from '@/app/types';
 
-const Score = () => {
-  const [scoreA, setScoreA] = useState(0);
-  const [scoreB, setScoreB] = useState(0);
-  const { registerEventHandler, unregisterEventHandler } = useWebSocket();
-
-  useEffect(() => {
-    const handleCurrentScore = (data) => {
-      if (data.team === 'team_a') {
-        setScoreA(data.score);
-      } else if (data.team === 'team_b') {
-        setScoreB(data.score);
-      }
-    };
-
-    registerEventHandler('currentScore', handleCurrentScore);
-
-    return () => {
-      unregisterEventHandler('currentScore', handleCurrentScore);
-    };
-  }, [registerEventHandler, unregisterEventHandler]);
-
+const TvScore = ({ score, counter }: { score: CurrentScore; counter: number | null }) => {
   return (
     <div className="relative">
       <div
@@ -37,7 +16,7 @@ const Score = () => {
       <div className="relative z-10 min-h-screen">
         <div className="w-full min-h-screen px-[4vw] pb-[10vh] flex flex-col gap-4 items-center justify-between">
           <div className="h-[15vh] overflow-hidden flex items-end ">
-            <Timer />
+            <Timer countDown={counter} />
           </div>
           <div className="flex gap-[6vw] justify-center items-center">
             <div
@@ -52,7 +31,7 @@ const Score = () => {
               <div className="bg-[url(/logos/Edenys.png)] bg-contain bg-no-repeat bg-center w-[13vw] h-[28vh]"></div>
 
               <div className="bg-[url(/edenys-score.png)] bg-contain bg-no-repeat bg-center w-[12vw] h-[14vh] px-[2vw] py-[1vh] flex justify-center items-center font-orbitron text-white text-[4vw] font-semibold">
-                {scoreA}
+                {score.team_a}
               </div>
             </div>
             <h1
@@ -73,7 +52,7 @@ const Score = () => {
               <div className="bg-[url(/logos/Nexora.png)] bg-contain bg-no-repeat bg-center w-[13vw] h-[28vh]"></div>
 
               <div className="bg-[url(/nexora-score.png)] bg-contain bg-no-repeat bg-center w-[12vw] h-[14vh] px-[2vw] py-[1vh] flex justify-center items-center font-orbitron text-white text-[4vw] font-semibold">
-                {scoreB}
+                {score.team_b}
               </div>
             </div>
           </div>
@@ -86,7 +65,7 @@ const Score = () => {
                 Nexora
               </h2>
             </div>
-            <LoaderBar scoreA={scoreA} scoreB={scoreB} />
+            <LoaderBar scoreA={score.team_a} scoreB={score.team_b} />
           </div>
         </div>
       </div>
@@ -94,4 +73,4 @@ const Score = () => {
   );
 };
 
-export default Score;
+export default TvScore;

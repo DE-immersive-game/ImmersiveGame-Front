@@ -5,7 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { useWebSocket } from '@/app/context/WebSocketUsage';
 import CountdownScreen from '@/app/components/countdown/Countdown';
 import Sequencies from '@/app/components/sequencies/Sequencies';
-import { Score, Team, TimerType } from '@/app/types';
+import { CurrentScore, Team, TimerType } from '@/app/types';
 
 const Game = () => {
   const { registerEventHandler, unregisterEventHandler } = useWebSocket();
@@ -20,10 +20,9 @@ const Game = () => {
   const [showCountdown, setShowCountdown] = useState(true);
   const [sequenceSuccess, setSequenceSuccess] = useState(false);
   const [sequenceError, setSequenceError] = useState(false);
-  const [score, setScore] = useState<Score>({
+  const [score, setScore] = useState<CurrentScore>({
     team_a: 0,
     team_b: 0,
-    winner: 'draw',
   });
 
   if (![Team.TEAM_A, Team.TEAM_B].includes(team)) {
@@ -47,14 +46,10 @@ const Game = () => {
     }
   };
 
-  const getCurrentScore = (data: { team: Team; score: number }) => {
-    const scoreA = data.team === 'team_a' ? data.score : score.team_a;
-    const scoreB = data.team === 'team_b' ? data.score : score.team_b;
-
+  const getCurrentScore = (data: CurrentScore) => {
     setScore({
-      team_a: scoreA,
-      team_b: scoreB,
-      winner: scoreA > scoreB ? Team.TEAM_A : scoreB > scoreA ? Team.TEAM_B : 'draw',
+      team_a: data.team_a,
+      team_b: data.team_b,
     });
   };
 
@@ -62,7 +57,7 @@ const Game = () => {
     if (message?.counter !== undefined && message?.duration !== undefined) {
       setCounter(message.counter);
       setDuration(message.duration);
-      console.log('Counter reçu :', message.counter);
+      // console.log('Counter reçu :', message.counter);
     } else {
       console.error('Données manquantes ou mal formatées dans le message :', message);
     }

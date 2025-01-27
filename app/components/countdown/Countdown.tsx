@@ -14,9 +14,7 @@ type CountdownScreenProps = {
 
 const CountdownScreen = ({ team, counter, duration, onComplete }: CountdownScreenProps) => {
   const [countDown, setCountDown] = useState<number | null>(null);
-  const { registerEventHandler, unregisterEventHandler } = useWebSocket();
   const currentTeamResources = team ? teamsRessources[team] : null;
-
 
   // Démarrer le timer lorsque l'événement `timerStarted` est reçu
   useEffect(() => {

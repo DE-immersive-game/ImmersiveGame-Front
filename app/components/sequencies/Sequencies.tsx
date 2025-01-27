@@ -1,6 +1,6 @@
 'use client';
 
-import { Score, Team } from '@/app/types';
+import { CurrentScore, Team } from '@/app/types';
 import { teamsRessources } from '@/lib/teamsRessources';
 import Number from '@/app/components/number/Number';
 import Timer from '@/app/components/timer/Timer';
@@ -13,7 +13,7 @@ type SequenciesProps = {
   counter: number | null;
   sequenceSuccess: boolean;
   sequenceError: boolean;
-  score: Score;
+  score: CurrentScore;
 };
 
 const Sequencies = ({
