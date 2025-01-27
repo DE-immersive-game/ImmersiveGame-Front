@@ -5,6 +5,8 @@ import { Team } from '@/app/types';
 import { teamsRessources } from '@/lib/teamsRessources';
 import Number from '@/app/components/number/Number';
 import Timer from '@/app/components/timer/Timer';
+import LittleScore from '@/app/components/littleScore/LittleScore';
+import { useWebSocket } from '@/app/context/WebSocketUsage';
 
 type SequenciesProps = {
   team: Team;
@@ -15,6 +17,10 @@ type SequenciesProps = {
 const Sequencies = ({ team, sequence: initialSequence, counter }: SequenciesProps) => {
   const [sequence, setSequence] = useState(initialSequence);
   const [error, setError] = useState(false);
+  const [scoreA, setScoreA] = useState(0);
+  const [scoreB, setScoreB] = useState(0);
+
+  const { registerEventHandler, unregisterEventHandler } = useWebSocket();
   const currentTeamResources = teamsRessources[team];
 
   useEffect(() => {
@@ -24,6 +30,28 @@ const Sequencies = ({ team, sequence: initialSequence, counter }: SequenciesProp
     const hasError = initialSequence.some((item) => item.error);
     setError(hasError);
   }, [initialSequence]);
+
+  useEffect(() => {
+    const handleCurrentScore = (data) => {
+      if (data.team === 'team_a') {
+        setScoreA(data.score);
+      } else if (data.team === 'team_b') {
+        setScoreB(data.score);
+      }
+    };
+
+    registerEventHandler('currentScore', handleCurrentScore);
+
+    return () => {
+      unregisterEventHandler('currentScore', handleCurrentScore);
+    };
+  }, [registerEventHandler, unregisterEventHandler]);
+
+  const score = {
+    team_a: scoreA,
+    team_b: scoreB,
+    winner: scoreA > scoreB ? Team.TEAM_A : scoreB > scoreA ? Team.TEAM_B : null,
+  };
 
   return (
     <div
@@ -57,7 +85,13 @@ const Sequencies = ({ team, sequence: initialSequence, counter }: SequenciesProp
             </div>
           )}
         </div>
-        <div> </div>
+        <div>
+          <LittleScore
+            team={team}
+            score={score}
+            resultType={error ? 'lose' : score.winner === team ? 'win' : 'draw'}
+          />
+        </div>
       </div>
     </div>
   );

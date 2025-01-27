@@ -68,7 +68,7 @@ const Result = ({ team, resultType, score, mode = 'default' }: ResultProps) => {
           )}
         </div>
         <div>
-          <LittleScore team={team} score={score} resultType="lose" mode="default" />
+          <LittleScore team={team} score={score} resultType="lose" />
         </div>
       </div>
     </div>
