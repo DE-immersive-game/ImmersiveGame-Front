@@ -50,7 +50,7 @@ const Sequencies = ({ team, sequence: initialSequence, counter }: SequenciesProp
   const score = {
     team_a: scoreA,
     team_b: scoreB,
-    winner: scoreA > scoreB ? Team.TEAM_A : scoreB > scoreA ? Team.TEAM_B : null,
+    winner: scoreA > scoreB ? Team.TEAM_A : scoreB > scoreA ? Team.TEAM_B : 'draw',
   };
 
   return (
@@ -87,9 +87,9 @@ const Sequencies = ({ team, sequence: initialSequence, counter }: SequenciesProp
         </div>
         <div>
           <LittleScore
-            team={team}
+            team={team} // Passe l'équipe active
             score={score}
-            resultType={error ? 'lose' : score.winner === team ? 'win' : 'draw'}
+            resultType={error ? 'lose' : 'win'}
           />
         </div>
       </div>
