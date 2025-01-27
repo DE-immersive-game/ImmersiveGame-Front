@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 type CountdownScreenProps = {
-  team: Team;
+  team?: Team;
   counter: number | null;
   duration: number | null;
   onComplete: () => void; // Callback à appeler une fois le compte à rebours terminé
@@ -14,7 +14,9 @@ type CountdownScreenProps = {
 
 const CountdownScreen = ({ team, counter, duration, onComplete }: CountdownScreenProps) => {
   const [countDown, setCountDown] = useState<number | null>(null);
-  const currentTeamResources = teamsRessources[team];
+  const { registerEventHandler, unregisterEventHandler } = useWebSocket();
+  const currentTeamResources = team ? teamsRessources[team] : null;
+
 
   // Démarrer le timer lorsque l'événement `timerStarted` est reçu
   useEffect(() => {
@@ -34,12 +36,18 @@ const CountdownScreen = ({ team, counter, duration, onComplete }: CountdownScree
       <div
         className="absolute inset-0 z-0 animate-background-pulse bg-center bg-cover"
         style={{
-          backgroundImage: `url(${currentTeamResources.background})`,
+          backgroundImage: team
+            ? `url(${currentTeamResources?.background})`
+            : 'url(/backgrounds/background-bicolore.png)',
         }}
       ></div>
       <div className="absolute top-10">
         <Image
-          src={currentTeamResources.logoLong}
+          src={
+            team
+              ? currentTeamResources?.logoLong ?? '/logos/Neutral-long.png'
+              : '/logos/Neutral-long.png'
+          }
           alt={`${team} Logo`}
           width={300}
           height={300}

@@ -36,7 +36,9 @@ const Score = () => {
       ></div>
       <div className="relative z-10 min-h-screen">
         <div className="w-full min-h-screen px-[4vw] pb-[10vh] flex flex-col gap-4 items-center justify-between">
-          <Timer />
+          <div className="h-[15vh] overflow-hidden flex items-end ">
+            <Timer />
+          </div>
           <div className="flex gap-[6vw] justify-center items-center">
             <div
               className="w-[20vw] h-[52vh] px-[4vw] py-[3vh] flex flex-col gap-[4vw] rounded-[0.6vw] border-[0.2vw] backdrop-blur-[2vw]"
