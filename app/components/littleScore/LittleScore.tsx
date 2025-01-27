@@ -1,14 +1,13 @@
-import { Score, ScoreResult, Team } from '@/app/types';
+import { Score, Team } from '@/app/types';
 import Icon from '../icon/Icon';
 
 type ResultProps = {
   team: Team | 'draw';
-  resultType: ScoreResult | 'draw';
   score: Score;
   mode?: 'default' | 'tv';
 };
 
-const LittleScore = ({ team, resultType, score }: ResultProps) => {
+const LittleScore = ({ team, score }: ResultProps) => {
   const isActiveTeamA = team === Team.TEAM_A;
   const isActiveTeamB = team === Team.TEAM_B;
 
