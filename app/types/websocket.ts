@@ -28,6 +28,11 @@ export type Score = {
   winner: Team | 'draw';
 };
 
+export type CurrentScore = {
+  team_a: number;
+  team_b: number;
+};
+
 export type ScoreResult = 'win' | 'lose';
 
 export type TimerType = { counter?: number; duration?: number };

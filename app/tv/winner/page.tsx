@@ -10,6 +10,16 @@ const WinnerPage = () => {
   const [score, setScore] = useState<Score | null>(null);
   const { registerEventHandler, unregisterEventHandler, receivedMessages } = useWebSocket();
 
+  // Fonction utilitaire pour mettre à jour le score
+  const updateScore = (data: { team_a: number; team_b: number; result: string }) => {
+    const { team_a, team_b, result } = data;
+    setScore({
+      team_a,
+      team_b,
+      winner: result, // Utilisation directe du résultat
+    });
+  };
+
   useEffect(() => {
     // Récupérer le dernier message 'teamScore'
     const lastTeamScoreMessage = receivedMessages
@@ -18,32 +28,14 @@ const WinnerPage = () => {
       .find((msg) => msg.event === 'teamScore');
 
     if (lastTeamScoreMessage) {
-      const { team_a, team_b, result } = lastTeamScoreMessage.data;
-      const winner = result === 'draw' ? 'draw' : team_a > team_b ? Team.TEAM_A : Team.TEAM_B;
-
-      setScore({
-        team_a,
-        team_b,
-        winner,
-      });
+      updateScore(lastTeamScoreMessage.data);
     }
 
     // Gérer les nouveaux événements WebSocket 'teamScore'
-    const handleTeamScore = (data: { team_a: number; team_b: number; result: string }) => {
-      const { team_a, team_b, result } = data;
-      const winner = result === 'draw' ? 'draw' : team_a > team_b ? Team.TEAM_A : Team.TEAM_B;
-
-      setScore({
-        team_a,
-        team_b,
-        winner,
-      });
-    };
-
-    registerEventHandler('teamScore', handleTeamScore);
+    registerEventHandler('teamScore', updateScore);
 
     return () => {
-      unregisterEventHandler('teamScore', handleTeamScore);
+      unregisterEventHandler('teamScore', updateScore);
     };
   }, [registerEventHandler, unregisterEventHandler, receivedMessages]);
 
@@ -51,13 +43,21 @@ const WinnerPage = () => {
     return <div className="text-center text-white text-3xl">Chargement des scores...</div>;
   }
 
-  const resultType: ScoreResult | 'draw' =
-    score.winner === 'draw' ? 'draw' : score.winner === Team.TEAM_A ? 'win' : 'lose';
+  // Afficher uniquement les résultats 'win' ou 'draw'
+  if (score.winner !== 'draw' && score.winner !== Team.TEAM_A && score.winner !== Team.TEAM_B) {
+    return (
+      <div className="text-center text-white text-3xl">
+        Aucun résultat gagnant ou match nul à afficher.
+      </div>
+    );
+  }
+
+  const resultType: ScoreResult | 'draw' = score.winner === 'draw' ? 'draw' : 'win';
 
   return (
     <div>
       <Result team={score.winner} score={score} resultType={resultType} mode="tv" />
-      <ResetGameHandler />;
+      <ResetGameHandler />
     </div>
   );
 };
