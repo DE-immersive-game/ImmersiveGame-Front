@@ -3,21 +3,20 @@
 import { Score, ScoreResult, Team } from '@/app/types';
 import { teamsRessources } from '@/lib/teamsRessources';
 import Image from 'next/image';
-import Icon from '../icon/Icon';
 import LittleScore from '../littleScore/LittleScore';
 
 type ResultProps = {
   team: Team | 'draw';
-  resultType: ScoreResult | 'draw';
+  result: ScoreResult | 'draw';
   score: Score;
-  mode?: 'default' | 'tv';
+  mode?: 'default' | 'spectators';
 };
 
-const Result = ({ team, resultType, score, mode = 'default' }: ResultProps) => {
+const ResultComponent = ({ team, result, score, mode = 'default' }: ResultProps) => {
   let currentTeamResources;
   let background;
 
-  if (resultType === 'lose') {
+  if (result === 'lose') {
     currentTeamResources = teamsRessources[team as Team];
     background = currentTeamResources.loseBackground || currentTeamResources.background;
   } else if (team === 'draw') {
@@ -34,11 +33,7 @@ const Result = ({ team, resultType, score, mode = 'default' }: ResultProps) => {
     background = currentTeamResources.background;
   }
 
-  const resultText =
-    resultType === 'win' ? 'Victoire' : resultType === 'lose' ? 'Defaite' : 'egalite';
-
-  const isActiveTeamA = resultType === 'lose' ? team === Team.TEAM_A : score.winner === Team.TEAM_A;
-  const isActiveTeamB = resultType === 'lose' ? team === Team.TEAM_B : score.winner === Team.TEAM_B;
+  const resultText = result === 'win' ? 'Victoire' : result === 'lose' ? 'Defaite' : 'egalite';
 
   return (
     <div className="relative">
@@ -59,20 +54,20 @@ const Result = ({ team, resultType, score, mode = 'default' }: ResultProps) => {
           >
             {resultText}
           </h1>
-          {mode === 'tv' && resultType !== 'draw' && (
+          {mode === 'spectators' && result !== 'draw' && (
             <h2 className="font-orbitron text-4xl text-white tracking-[.25em]">
-              {resultType === 'lose'
+              {result === 'lose'
                 ? `${currentTeamResources.name}`
                 : `${teamsRessources[score.winner as Team].name}`}
             </h2>
           )}
         </div>
         <div>
-          <LittleScore team={team} score={score} resultType="lose" />
+          <LittleScore team={team} score={score} result="lose" />
         </div>
       </div>
     </div>
   );
 };
 
-export default Result;
+export default ResultComponent;

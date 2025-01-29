@@ -35,7 +35,7 @@ export type CurrentScore = {
 
 export type ScoreResult = 'win' | 'lose';
 
-export type TimerType = { counter?: number; duration?: number };
+export type Timer = { counter?: number; duration?: number };
 
 export interface WebSocketData {
   team?: Team;
@@ -61,8 +61,8 @@ export interface WebSocketContextType {
   receivedMessages: WebSocketMessageWithTime[];
   sentMessages: WebSocketMessageWithTime[];
   sendMessage: (message: WebSocketMessage) => void;
-  loadingState: string;
-  setLoadingState: Dispatch<SetStateAction<string>>;
+  waitingState: string;
+  setWaitingState: Dispatch<SetStateAction<string>>;
   registerEventHandler: (event: WebSocketEvent, handler: (data: any) => void) => void;
   unregisterEventHandler: (event: WebSocketEvent, handler: (data: any) => void) => void;
   lastTeamScore: Score | null;

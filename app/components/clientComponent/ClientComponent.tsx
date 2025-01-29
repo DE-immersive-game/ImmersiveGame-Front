@@ -1,7 +1,7 @@
 'use client';
 
 import './globals.css';
-import { WebSocketProvider } from '../../context/WebSocketContext';
+import { WebSocketProvider } from '../../context/WebSocketUsage';
 import { usePathname } from 'next/navigation';
 import { Team } from '@/app/types';
 

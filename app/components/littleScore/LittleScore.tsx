@@ -1,13 +1,14 @@
-import { CurrentScore, Team } from '@/app/types';
+import { CurrentScore, Team, ScoreResult } from '@/app/types';
 import Icon from '../icon/Icon';
 
 type ResultProps = {
   team: Team | 'draw';
   score: CurrentScore;
-  mode?: 'default' | 'tv';
+  mode?: 'default' | 'spectators';
+  result?: ScoreResult | 'draw';
 };
 
-const LittleScore = ({ team, score }: ResultProps) => {
+const LittleScore = ({ team, score, result }: ResultProps) => {
   return (
     <div className="flex items-center justify-between bg-neutral-text bg-opacity-5 rounded-2xl py-8 px-10 border-2 border-white/40 shadow-inner">
       <div className="flex items-center gap-12">

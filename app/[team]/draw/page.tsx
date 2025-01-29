@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import Result from '@/app/components/result/Result';
+import ResultComponent from '@/app/components/resultComponent/ResultComponent';
 import { Score, Team } from '@/app/types';
 import { useWebSocket } from '@/app/context/WebSocketUsage';
 
@@ -63,7 +63,7 @@ const DrawPage = () => {
 
   return (
     <div>
-      <Result team="draw" score={score} resultType="draw" mode="tv" />
+      <ResultComponent team="draw" score={score} result="draw" mode="spectators" />
     </div>
   );
 };

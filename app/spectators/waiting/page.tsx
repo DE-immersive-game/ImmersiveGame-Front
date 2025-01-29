@@ -3,24 +3,19 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useWebSocket } from '@/app/context/WebSocketUsage';
-import LoadingTvScreen from '@/app/components/loading-tv/LoadingTv';
+import WaitingSpectatorsScreen from '@/app/components/waitingSpectators/WaitingSpectators';
 
-const LoadingPage = () => {
+const WaitingPage = () => {
   const router = useRouter();
-  const {
-    isConnected,
-    loadingState,
-    setLoadingState,
-    registerEventHandler,
-    unregisterEventHandler,
-  } = useWebSocket();
+  const { waitingState, setWaitingState, registerEventHandler, unregisterEventHandler } =
+    useWebSocket();
 
   useEffect(() => {
     const handleStartGame = () => {
       console.log('Start game event received');
-      setLoadingState('starting');
+      setWaitingState('starting');
       const timeoutId = setTimeout(() => {
-        router.push(`/tv/game`);
+        router.push(`/spectators/game`);
       }, 1000);
 
       return () => clearTimeout(timeoutId); // Nettoie le timeout
@@ -31,9 +26,9 @@ const LoadingPage = () => {
     return () => {
       unregisterEventHandler('startGame', handleStartGame);
     };
-  }, [router, setLoadingState, registerEventHandler, unregisterEventHandler]);
+  }, [router, setWaitingState, registerEventHandler, unregisterEventHandler]);
 
-  return <LoadingTvScreen state={loadingState} />;
+  return <WaitingSpectatorsScreen state={waitingState} />;
 };
 
-export default LoadingPage;
+export default WaitingPage;

@@ -1,10 +1,10 @@
 import Image from 'next/image';
 
-type LoadingTvScreenProps = {
+type WaitingSpectatorsScreenProps = {
   state: string;
 };
 
-const LoadingTvScreen = ({ state }: LoadingTvScreenProps) => {
+const WaitingSpectatorsScreen = ({ state }: WaitingSpectatorsScreenProps) => {
   // Détermine le texte ou contenu basé sur l'état
   const getContent = () => {
     switch (state) {
@@ -52,4 +52,4 @@ const LoadingTvScreen = ({ state }: LoadingTvScreenProps) => {
   );
 };
 
-export default LoadingTvScreen;
+export default WaitingSpectatorsScreen;

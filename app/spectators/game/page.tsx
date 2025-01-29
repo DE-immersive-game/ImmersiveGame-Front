@@ -2,9 +2,9 @@
 
 import CountdownScreen from '@/app/components/countdown/Countdown';
 import ResetGameHandler from '@/app/components/resetGameHandler/ResetGameHandler';
-import TvScore from '@/app/components/tvScore/TvScore';
+import SpectatorsScore from '@/app/components/spectatorsScore/SpectatorsScore';
 import { useWebSocket } from '@/app/context/WebSocketUsage';
-import { CurrentScore, TimerType } from '@/app/types';
+import { CurrentScore, Timer } from '@/app/types';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 export default function GamePage() {
@@ -25,17 +25,16 @@ export default function GamePage() {
     });
   };
 
-  const handleTimerStarted = (message: TimerType) => {
+  const handleTimerStarted = (message: Timer) => {
     if (message?.counter !== undefined && message?.duration !== undefined) {
       setCounter(message.counter);
       setDuration(message.duration);
-      // console.log('Counter reçu :', message.counter);
     } else {
       console.error('Données manquantes ou mal formatées dans le message :', message);
     }
   };
 
-  const handleTeamScore = (data: CurrentScore) => {
+  const handleTeamScore = () => {
     router.push('winner');
   };
 
@@ -63,7 +62,7 @@ export default function GamePage() {
           duration={duration}
         />
       ) : (
-        <TvScore score={score} counter={counter} />
+        <SpectatorsScore score={score} counter={counter} />
       )}
       <ResetGameHandler />
     </div>

@@ -3,25 +3,20 @@
 import { useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useWebSocket } from '@/app/context/WebSocketUsage';
-import LoadingScreen from '@/app/components/loading/Loading';
+import WaitingScreen from '@/app/components/waiting/Waiting';
 import { Team } from '@/app/types';
 
-const LoadingPage = () => {
+const WaitingPage = () => {
   const params = useParams();
   const router = useRouter();
   const team = (typeof params.team === 'string' ? params.team : '') as Team;
-  const {
-    isConnected,
-    loadingState,
-    setLoadingState,
-    registerEventHandler,
-    unregisterEventHandler,
-  } = useWebSocket();
+  const { waitingState, setWaitingState, registerEventHandler, unregisterEventHandler } =
+    useWebSocket();
 
   useEffect(() => {
     const handleStartGame = () => {
       console.log('Start game event received');
-      setLoadingState('starting');
+      setWaitingState('starting');
       const timeoutId = setTimeout(() => {
         router.push(`/${team}/game`);
       }, 1000);
@@ -34,9 +29,9 @@ const LoadingPage = () => {
     return () => {
       unregisterEventHandler('startGame', handleStartGame);
     };
-  }, [team, router, setLoadingState, registerEventHandler, unregisterEventHandler]);
+  }, [team, router, setWaitingState, registerEventHandler, unregisterEventHandler]);
 
-  return <LoadingScreen team={team} state={loadingState} />;
+  return <WaitingScreen team={team} state={waitingState} />;
 };
 
-export default LoadingPage;
+export default WaitingPage;
