@@ -10,7 +10,7 @@ import {
   Score,
 } from '../types';
 
-const WEBSOCKET_URL = 'ws://localhost:8000/admin';
+const WEBSOCKET_URL = 'ws://192.168.0.104:8000/admin';
 const RECONNECTION_DELAY = 2000;
 
 const WebSocketContext = createContext<WebSocketContextType | undefined>(undefined);
