@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Result from '@/app/components/result/Result';
+import ResultComponent from '@/app/components/resultComponent/ResultComponent';
 import { Score, Team, ScoreResult } from '@/app/types';
 import { useWebSocket } from '@/app/context/WebSocketUsage';
 import ResetGameHandler from '@/app/components/resetGameHandler/ResetGameHandler';
@@ -16,7 +16,7 @@ const WinnerPage = () => {
     setScore({
       team_a,
       team_b,
-      winner: result, // Utilisation directe du résultat
+      winner: result as Team | 'draw', // Utilisation directe du résultat
     });
   };
 
@@ -52,11 +52,11 @@ const WinnerPage = () => {
     );
   }
 
-  const resultType: ScoreResult | 'draw' = score.winner === 'draw' ? 'draw' : 'win';
+  const result: ScoreResult | 'draw' = score.winner === 'draw' ? 'draw' : 'win';
 
   return (
     <div>
-      <Result team={score.winner} score={score} resultType={resultType} mode="tv" />
+      <ResultComponent team={score.winner} score={score} result={result} mode="spectators" />
       <ResetGameHandler />
     </div>
   );

@@ -5,7 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { useWebSocket } from '@/app/context/WebSocketUsage';
 import CountdownScreen from '@/app/components/countdown/Countdown';
 import Sequencies from '@/app/components/sequencies/Sequencies';
-import { CurrentScore, Team, TimerType } from '@/app/types';
+import { CurrentScore, Team, Timer } from '@/app/types';
 
 const Game = () => {
   const { registerEventHandler, unregisterEventHandler } = useWebSocket();
@@ -53,11 +53,10 @@ const Game = () => {
     });
   };
 
-  const handleTimerStarted = (message: TimerType) => {
+  const handleTimerStarted = (message: Timer) => {
     if (message?.counter !== undefined && message?.duration !== undefined) {
       setCounter(message.counter);
       setDuration(message.duration);
-      // console.log('Counter reçu :', message.counter);
     } else {
       console.error('Données manquantes ou mal formatées dans le message :', message);
     }

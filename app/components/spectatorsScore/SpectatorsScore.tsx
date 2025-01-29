@@ -1,10 +1,10 @@
 'use client';
 
 import LoaderBar from '../loaderbar/LoaderBar';
-import Timer from '../timer/Timer';
+import Timer from '../timerComponent/TimerComponent';
 import { CurrentScore } from '@/app/types';
 
-const TvScore = ({ score, counter }: { score: CurrentScore; counter: number | null }) => {
+const SpectatorsScore = ({ score, counter }: { score: CurrentScore; counter: number | null }) => {
   return (
     <div className="relative">
       <div
@@ -30,7 +30,7 @@ const TvScore = ({ score, counter }: { score: CurrentScore; counter: number | nu
             >
               <div className="bg-[url(/logos/Edenys.png)] bg-contain bg-no-repeat bg-center w-[13vw] h-[28vh]"></div>
 
-              <div className="bg-[url(/edenys-score.png)] bg-contain bg-no-repeat bg-center w-[12vw] h-[14vh] px-[2vw] py-[1vh] flex justify-center items-center font-orbitron text-white text-[4vw] font-semibold">
+              <div className="bg-[url(/score/edenys-score.png)] bg-contain bg-no-repeat bg-center w-[12vw] h-[14vh] px-[2vw] py-[1vh] flex justify-center items-center font-orbitron text-white text-[4vw] font-semibold">
                 {score.team_a}
               </div>
             </div>
@@ -51,7 +51,7 @@ const TvScore = ({ score, counter }: { score: CurrentScore; counter: number | nu
             >
               <div className="bg-[url(/logos/Nexora.png)] bg-contain bg-no-repeat bg-center w-[13vw] h-[28vh]"></div>
 
-              <div className="bg-[url(/nexora-score.png)] bg-contain bg-no-repeat bg-center w-[12vw] h-[14vh] px-[2vw] py-[1vh] flex justify-center items-center font-orbitron text-white text-[4vw] font-semibold">
+              <div className="bg-[url(/score/nexora-score.png)] bg-contain bg-no-repeat bg-center w-[12vw] h-[14vh] px-[2vw] py-[1vh] flex justify-center items-center font-orbitron text-white text-[4vw] font-semibold">
                 {score.team_b}
               </div>
             </div>
@@ -73,4 +73,4 @@ const TvScore = ({ score, counter }: { score: CurrentScore; counter: number | nu
   );
 };
 
-export default TvScore;
+export default SpectatorsScore;

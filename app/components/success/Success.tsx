@@ -1,9 +1,0 @@
-const Succes = () => {
-  return (
-    <div>
-      <h1>Succes !! 🥳</h1>
-    </div>
-  );
-};
-
-export default Succes;

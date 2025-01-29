@@ -9,7 +9,6 @@ import {
   WebSocketMessageWithTime,
   WebSocketEvent,
   Score,
-  Team,
 } from '../types';
 
 const WEBSOCKET_URL = 'ws://192.168.2.1:8000/admin';
@@ -21,12 +20,11 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [receivedMessages, setReceivedMessages] = useState<WebSocketMessageWithTime[]>([]);
   const [sentMessages, setSentMessages] = useState<WebSocketMessageWithTime[]>([]);
-  const [loadingState, setLoadingState] = useState<string>('waiting');
+  const [waitingState, setWaitingState] = useState<string>('waiting');
   const [eventHandlers, setEventHandlers] = useState<
     Record<WebSocketEvent, ((data: any) => void)[]>
   >({} as any);
   const [lastTeamScore, setLastTeamScore] = useState<Score | null>(null);
-  const router = useRouter();
 
   const registerEventHandler = useCallback(
     (event: WebSocketEvent, handler: (data: any) => void) => {
@@ -96,8 +94,8 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
         receivedMessages,
         sentMessages,
         sendMessage,
-        loadingState,
-        setLoadingState,
+        waitingState,
+        setWaitingState,
         registerEventHandler,
         unregisterEventHandler,
         lastTeamScore,

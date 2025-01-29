@@ -1,11 +1,11 @@
 'use client';
 import { useWebSocket } from '@/app/context/WebSocketUsage';
-import { TimerType } from '@/app/types';
+import { Timer } from '@/app/types';
 import { useEffect, useState } from 'react';
 
-type TimerProps = { countDown?: number | null };
+type TimerProps = { countDown?: number | null; initialDuration?: number | null };
 
-const Timer = ({ countDown }: TimerProps) => {
+const TimerComponent = ({ countDown }: TimerProps) => {
   const { registerEventHandler, unregisterEventHandler } = useWebSocket();
   const [counter, setCounter] = useState<number | null>(countDown ?? null);
 
@@ -17,7 +17,7 @@ const Timer = ({ countDown }: TimerProps) => {
   // Démarrer le timer lorsque l'événement `timerStarted` est reçu
   useEffect(() => {
     if (counter === null) {
-      const handleTimerStarted = (message: TimerType) => {
+      const handleTimerStarted = (message: Timer) => {
         if (message?.counter !== undefined) {
           setCounter(message.counter);
           // console.log('Counter reçu :', message.counter);
@@ -59,4 +59,4 @@ const Timer = ({ countDown }: TimerProps) => {
   );
 };
 
-export default Timer;
+export default TimerComponent;

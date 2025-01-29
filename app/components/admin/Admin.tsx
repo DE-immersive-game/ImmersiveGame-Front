@@ -3,10 +3,9 @@
 import React from 'react';
 import { useWebSocket } from '@/app/context/WebSocketUsage';
 import { WebSocketMessage, WebSocketEvent, Team } from '@/app/types';
-import { send } from 'process';
 
 const Admin = () => {
-  const { isConnected, receivedMessages, sentMessages, sendMessage } = useWebSocket();
+  const { isConnected, sendMessage } = useWebSocket();
 
   const handleSendEvent = (event: WebSocketEvent, data: Record<string, any> = {}) => {
     const message: WebSocketMessage = { event, data };

@@ -1,12 +1,12 @@
 import { cn } from '@/lib/utils';
 import React from 'react';
 
-type ProgressBarProps = {
+type ScoreBarProps = {
   scoreA: number;
   scoreB: number;
 };
 
-const LoaderBar = ({ scoreA, scoreB }: ProgressBarProps) => {
+const ScoreBar = ({ scoreA, scoreB }: ScoreBarProps) => {
   const scoreDifference = scoreA - scoreB;
 
   // Determine bar state based on score difference
@@ -86,4 +86,4 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
 };
 
-export default LoaderBar;
+export default ScoreBar;

@@ -17,9 +17,9 @@ const ResetGameHandler: React.FC<ResetGameHandlerProps> = ({ team }) => {
     const handleResetGame = () => {
       console.log(`Reset game event received${team ? ` for team: ${team}` : ''}`);
       if (team) {
-        router.push(`/${team}/loading`);
+        router.push(`/${team}/waiting`);
       } else {
-        router.push('loading');
+        router.push('waiting');
       }
     };
 

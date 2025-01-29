@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import Result from '@/app/components/result/Result';
+import ResultComponent from '@/app/components/resultComponent/ResultComponent';
 import { Score, Team } from '@/app/types';
 import { useWebSocket } from '@/app/context/WebSocketUsage';
 
@@ -67,40 +67,9 @@ const LosePage = () => {
 
   return (
     <div>
-      <Result team={team} score={score} resultType="lose" mode="tv" />
+      <ResultComponent team={team} score={score} result="lose" mode="spectators" />
     </div>
   );
 };
 
 export default LosePage;
-
-// 'use client';
-
-// import Result from '@/app/components/result/Result';
-// import { Score, Team } from '@/app/types';
-
-// const LosePage = () => {
-//   const team: Team = Team.TEAM_B;
-
-//   const score: Score = {
-//     team_a: 2,
-//     team_b: 0,
-//     winner: Team.TEAM_A,
-//   };
-
-//   if (score.winner === team) {
-//     return (
-//       <div className="text-center text-white text-3xl">
-//         Cette équipe n'a pas perdu ou le résultat est incorrect
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div>
-//       <Result team={team} score={score} resultType="lose" mode="tv" />
-//     </div>
-//   );
-// };
-
-// export default LosePage;

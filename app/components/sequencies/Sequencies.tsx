@@ -3,7 +3,7 @@
 import { CurrentScore, Team } from '@/app/types';
 import { teamsRessources } from '@/lib/teamsRessources';
 import Number from '@/app/components/number/Number';
-import Timer from '@/app/components/timer/Timer';
+import Timer from '@/app/components/timerComponent/TimerComponent';
 import LittleScore from '@/app/components/littleScore/LittleScore';
 import Icon from '../icon/Icon';
 

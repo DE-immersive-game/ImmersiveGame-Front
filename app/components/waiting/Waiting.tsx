@@ -9,7 +9,7 @@ type LoadingScreenProps = {
   state: string;
 };
 
-const LoadingScreen = ({ team, state }: LoadingScreenProps) => {
+const WaitingScreen = ({ team, state }: LoadingScreenProps) => {
   const currentTeamResources = teamsRessources[team];
 
   if (!currentTeamResources) {
@@ -62,4 +62,4 @@ const LoadingScreen = ({ team, state }: LoadingScreenProps) => {
   );
 };
 
-export default LoadingScreen;
+export default WaitingScreen;
