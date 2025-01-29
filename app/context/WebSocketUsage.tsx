@@ -59,6 +59,10 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
           { message: JSON.stringify(parsedMessage), time: currentTime },
         ]);
 
+        if (parsedMessage.event === 'resetGame') {
+          setWaitingState('waiting');
+        }
+
         const handlers = eventHandlers[parsedMessage.event] || [];
         handlers.forEach((handler) => handler(parsedMessage.data));
       } catch (error) {
