@@ -10,7 +10,7 @@ import {
   Score,
 } from '../types';
 
-const WEBSOCKET_URL = 'ws://192.168.0.104:8000/admin';
+const WEBSOCKET_URL = 'ws://localhost:8000/admin';
 const RECONNECTION_DELAY = 2000;
 
 const WebSocketContext = createContext<WebSocketContextType | undefined>(undefined);
@@ -27,6 +27,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
   const [lastTeamScore, setLastTeamScore] = useState<Score | null>(null);
 
   const reconnectionTimeoutId = useRef<NodeJS.Timeout>();
+  const wsRef = useRef<WebSocket | null>(null);
 
   const registerEventHandler = useCallback(
     (event: WebSocketEvent, handler: (data: any) => void) => {
@@ -48,8 +49,26 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
     [],
   );
 
+  const cleanupWebSocket = useCallback(() => {
+    if (wsRef.current) {
+      wsRef.current.onclose = null; // Prevent the reconnection logic from firing
+      wsRef.current.close();
+      wsRef.current = null;
+    }
+    if (reconnectionTimeoutId.current) {
+      clearTimeout(reconnectionTimeoutId.current);
+      reconnectionTimeoutId.current = undefined;
+    }
+    setSocket(null);
+    setIsConnected(false);
+  }, []);
+
   const connectWebSocket = useCallback(() => {
+    // Clean up any existing connection first
+    cleanupWebSocket();
+
     const ws = new WebSocket(WEBSOCKET_URL);
+    wsRef.current = ws;
 
     const handleMessage = (event: MessageEvent) => {
       try {
@@ -74,24 +93,23 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
 
     ws.onopen = () => {
       setIsConnected(true);
+      setSocket(ws);
       console.log('WebSocket connected');
     };
 
     ws.onclose = () => {
-      setIsConnected(false);
-      console.log('WebSocket disconnected');
-
-      console.log(`Tentative de reconnexion`);
-      
-      // Nettoyer le timeout précédent si il existe
-      if (reconnectionTimeoutId.current) {
-        clearTimeout(reconnectionTimeoutId.current);
+      if (wsRef.current === ws) { // Only handle if this is still the current socket
+        setIsConnected(false);
+        setSocket(null);
+        console.log('WebSocket disconnected');
+        console.log('Tentative de reconnexion');
+        
+        reconnectionTimeoutId.current = setTimeout(() => {
+          if (wsRef.current === ws) { // Double check before reconnecting
+            connectWebSocket();
+          }
+        }, RECONNECTION_DELAY);
       }
-      
-      // Planifier la prochaine tentative
-      reconnectionTimeoutId.current = setTimeout(() => {
-        connectWebSocket();
-      }, RECONNECTION_DELAY);
     };
 
     ws.onerror = (error) => {
@@ -100,21 +118,16 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
 
     ws.onmessage = handleMessage;
 
-    setSocket(ws);
-
     return ws;
-  }, [eventHandlers]);
+  }, [eventHandlers, cleanupWebSocket]);
 
   useEffect(() => {
-    const ws = connectWebSocket();
+    connectWebSocket();
 
     return () => {
-      if (reconnectionTimeoutId.current) {
-        clearTimeout(reconnectionTimeoutId.current);
-      }
-      ws.close();
+      cleanupWebSocket();
     };
-  }, [connectWebSocket]);
+  }, [connectWebSocket, cleanupWebSocket]);
 
   const sendMessage = (message: WebSocketMessage) => {
     if (socket && socket.readyState === WebSocket.OPEN) {
